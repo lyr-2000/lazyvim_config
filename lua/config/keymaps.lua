@@ -12,9 +12,20 @@
 vim.cmd("set clipboard=unnamedplus")
 
 local map = vim.keymap.set
+local del = vim.keymap.del
+del("n", "<c-/>", {})
+del("n", "<c-_>", {})
+del("t", "<c-/>", {})
+del("t", "<c-_>", {})
 
-vim.keymap.set("n", "<S-h>", "^")
-vim.keymap.set("n", "<S-l>", "$")
+-- map("n", "<c-/>", "gcc")
+-- map("n", "<c-_>", "gcc")
+
+vim.cmd("nmap <C-_> gcc")
+vim.cmd("nmap <C-/> gcc")
+
+map("n", "<S-h>", "^")
+map("n", "<S-l>", "$")
 --  buffer切换
 map("n", "<A-h>", "<C-w>h")
 map("n", "<A-l>", "<C-w>l")
@@ -52,15 +63,6 @@ map("i", "<S-Insert>", "<ESC>pi")
 --
 -- :verbose map
 
--- local command_keymaps = {
---     ["DebugToggleUI"] = "<C-u>"
-
--- }
-
--- for k, v in pairs(command_keymaps) do
---    map("n",k,v)
--- end
-
 -- lsp install
 
 map("n", "<C-x>", "<cmd>Mason<cr>")
@@ -70,162 +72,57 @@ map("n", "<C-x>", "<cmd>Mason<cr>")
 -- print("demo")
 -- end)
 
+function domsg(s)
+  vim.notify(s)
+end
+
 map("n", "<leader>a", function()
   vim.notify("heloworld")
-  --notify({
-  --  msg = "helloworld",
-  --  level = "info",
-  --})
 end)
-
-local dap = require("dap")
-local dapui = require("dapui")
 
 map("n", "<C-x>", function()
-  dapui.toggle({})
-end)
-
-map("n", "<C-n>", function()
-  -- local dap = require("dap")
-  -- local session = dap.session()
-  -- if session == nil then
-  --   print('helloworld')
-  --   return
-  -- end
-  local status = dap.status()
-  if status == nil or status == "" then
+  if isdap() then
+    local dapui = require("dapui")
+    dapui.toggle({})
     return
   end
-  dap.step_over()
+end)
+
+function isdap()
+  local dap = require("dap")
+  local status = dap.status()
+  if status == nil or status == "" then
+    return false
+  end
+  return true
+end
+
+function createFile()
+  -- local api = require("nvim-tree.api")
+  -- api.fs.create()
+  domsg("please press key a or A for create file or dir")
+end
+
+map("n", "<C-n>", function()
+  if isdap() then
+    local dap = require("dap")
+    dap.step_over()
+    return
+  end
+  createFile()
 end)
 
 map("n", "<C-i>", function()
-  dap.step_into()
+  if isdap() then
+    local dap = require("dap")
+    dap.step_into()
+    return
+  end
 end)
 map("n", "<C-o>", function()
-  dap.step_continue()
+  if isdap() then
+    local dap = require("dap")
+    dap.continue()
+    return
+  end
 end)
-
--- keys = {{
---   "<leader>dB",
---   function()
---       require("dap").set_breakpoint(vim.fn.input('Breakpoint condition: '))
---   end,
---   desc = "Breakpoint Condition"
--- }, {
---   "<leader>db",
---   function()
---       require("dap").toggle_breakpoint()
---   end,
---   desc = "Toggle Breakpoint"
--- }, {
---   "<leader>dc",
---   function()
---       require("dap").continue()
---   end,
---   desc = "Continue"
--- }, {
---   "<leader>da",
---   function()
---       require("dap").continue({
---           before = get_args
---       })
---   end,
---   desc = "Run with Args"
--- }, {
---   "<leader>dC",
---   function()
---       require("dap").run_to_cursor()
---   end,
---   desc = "Run to Cursor"
--- }, {
---   "<leader>dg",
---   function()
---       require("dap").goto_()
---   end,
---   desc = "Go to Line (No Execute)"
--- }, {
---   "<leader>di",
---   function()
---       require("dap").step_into()
---   end,
---   desc = "Step Into"
--- }, {
---   "<leader>dj",
---   function()
---       require("dap").down()
---   end,
---   desc = "Down"
--- }, {
---   "<leader>dk",
---   function()
---       require("dap").up()
---   end,
---   desc = "Up"
--- }, {
---   "<leader>dl",
---   function()
---       require("dap").run_last()
---   end,
---   desc = "Run Last"
--- }, {
---   "<leader>do",
---   function()
---       require("dap").step_out()
---   end,
---   desc = "Step Out"
--- }, {
---   "<leader>dO",
---   function()
---       require("dap").step_over()
---   end,
---   desc = "Step Over"
--- }, {
---   "<leader>dp",
---   function()
---       require("dap").pause()
---   end,
---   desc = "Pause"
--- }, {
---   "<leader>dr",
---   function()
---       require("dap").repl.toggle()
---   end,
---   desc = "Toggle REPL"
--- }, {
---   "<leader>ds",
---   function()
---       require("dap").session()
---   end,
---   desc = "Session"
--- }, {
---   "<leader>dt",
---   function()
---       require("dap").terminate()
---   end,
---   desc = "Terminate"
--- }, {
---   "<leader>dw",
---   function()
---       require("dap.ui.widgets").hover()
---   end,
---   desc = "Widgets"
--- }},
-
--- config = function()
---   local Config = require("lazyvim.config")
---   vim.api.nvim_set_hl(0, "DapStoppedLine", {
---       default = true,
---       link = "Visual"
---   })
-
---   for name, sign in pairs(Config.icons.dap) do
---       sign = type(sign) == "table" and sign or {sign}
---       vim.fn.sign_define("Dap" .. name, {
---           text = sign[1],
---           texthl = sign[2] or "DiagnosticInfo",
---           linehl = sign[3],
---           numhl = sign[3]
---       })
---   end
--- end
