@@ -9,6 +9,9 @@
 -- -- DO NOT USE THIS IN YOU OWN CONFIG!!
 -- -- use `vim.keymap.set` instead
 -- local map = Util.safe_keymap_set
+--
+vim.cmd("set clipboard=unnamedplus")
+
 local map = vim.keymap.set
 
 vim.keymap.set("n", "<S-h>", "^")
@@ -30,6 +33,15 @@ vim.keymap.set("n", "<A-q>", "<cmd>bd<cr>")
 -- buffers
 map("n", "<A-n>", "<cmd>bprevious<cr>", { desc = "Prev buffer" })
 map("n", "<A-m>", "<cmd>bnext<cr>", { desc = "Next buffer" })
-local builtin = require('telescope.builtin')
+
+-- map("c", "w!!", "w !sudo tee > /dev/null %", { desc = "must write" })
+map("c", "<C-a>", "SudaWrite", { desc = "must write" })
+
+local builtin = require("telescope.builtin")
 -- grep search https://github.com/BurntSushi/ripgrep#installation
 map("n", "gf", builtin.live_grep)
+
+map("i", "<S-Insert>", "<ESC>pi")
+
+-- debug 快捷键配置
+--
