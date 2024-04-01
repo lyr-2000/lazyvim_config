@@ -1,10 +1,17 @@
 -- 
 return { -- disable catppuccin
-{"ellisonleao/gruvbox.nvim"}, 
+-- {
+--     "askfiy/SimpleNvim",
+-- },
 {
+    "ellisonleao/gruvbox.nvim",
+    -- enabled = false
+
+}, {
     "LazyVim/LazyVim",
+    -- enable = false,
     opts = {
-        colorscheme = "gruvbox"
+        colorscheme = "simpleNvim"
     }
 }, -- change trouble config
 {
@@ -41,23 +48,34 @@ return { -- disable catppuccin
     },
     init = function()
         -- when noice is not enabled, install notify on VeryLazy
-        if not LazyVim then 
+        if not LazyVim then
             return
         end
-        if  not LazyVim.has("noice.nvim") then
+        if not LazyVim.has("noice.nvim") then
             LazyVim.on_very_lazy(function()
                 vim.notify = require("notify")
             end)
         end
     end
-},
-
-{
+}, {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
-    keys = { { "<leader>cs", "<cmd>SymbolsOutline<cr>", desc = "Symbols Outline" } },
-    config = true,
-},
+    keys = {{
+        "<leader>cs",
+        "<cmd>SymbolsOutline<cr>",
+        desc = "Symbols Outline"
+    }},
+    config = true
+}, {
+    "nvimdev/dashboard-nvim",
+    event = "VimEnter",
+    opts = function(_, opts)
+        local logo = [[
+X
+            ]]
 
-
-}
+        logo = string.rep("\n", 8) .. logo .. "\n\n"
+        opts.config.header = vim.split(logo, "\n")
+        opts.theme = "doom"
+    end
+}}

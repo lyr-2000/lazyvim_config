@@ -6,5 +6,6 @@
 local opt = vim.opt
 
 opt.relativenumber = true
-opt.termguicolors = true 
+opt.termguicolors = true
 
+vim.cmd("set clipboard=unnamedplus")
