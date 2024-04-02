@@ -7,5 +7,15 @@ local opt = vim.opt
 
 opt.relativenumber = true
 opt.termguicolors = true
+opt.showcmd = true
+opt.wildmenu = true
+opt.backspace = "indent,eol,start"
 
-vim.cmd("set clipboard=unnamedplus")
+vim.cmd([[
+set clipboard=unnamedplus
+]])
+
+vim.cmd([[
+set laststatus=2
+
+]])
