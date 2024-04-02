@@ -26,16 +26,25 @@ del("t", "<c-_>", {})
 
 -- map("n", "<c-/>", "gcc")
 -- map("n", "<c-_>", "gcc")
+-- map("n", "<C-h>", function()
+-- print("hello")
+-- gjump.backward()
+-- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-o>"]])
+--   -- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-o>"]])
+--   -- vim.cmd([[execute "normal! ]] .. tostring("") .. [[\<c-o>"]])
+-- end)
 
-map("n", "<C-h>", function()
-  -- print("hello")
-  gjump.backward()
-end)
+-- map("n", "<C-l>", function()
+--   -- print("hello")
+--   gjump.forward()
+--   -- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-i>"]])
+--   -- vim.cmd([[execute "normal! ]] .. tostring("") .. [[\<c-i>"]])
+-- end)
 
-map("n", "<C-l>", function()
-  -- print("hello")
-  gjump.forward()
-end)
+--]]
+
+map("n", "<C-h>", "<C-o>", { desc = "prev change" })
+map("n", "<C-l>", "<C-i>", { desc = "next change" })
 
 map("n", "<C-u>", "<cmd>redo<cr>")
 
@@ -54,7 +63,7 @@ map("n", "<A-i>", "<cmd>Telescope oldfiles<cr>")
 map("n", "<A-i>", "<cmd>Telescope oldfiles<cr>")
 map("n", "<A-;>", "<C-w>|")
 
--- map("n", "<A-q>", "<cmd>bd<cr>")
+-- map("n", "<A-q>", "<cmd>bp<bar>sp<bar>bn<bar>bd<CR>")
 
 -- mp4viewer.lua
 -- guide: https://github.com/glepnir/nvim-lua-guide-zh
@@ -66,7 +75,7 @@ end
 -- 设置自动命令，在尝试退出包含 MP4 文件的缓冲区时调用确认函数
 -- bbssss
 
-map("n", "<A-q>", ":bd<cr>")
+map("n", "<A-q>", ":bp<bar>sp<bar>bn<bar>bd<CR>")
 
 map("n", "<C-w><A-q>", "<cmd>BufferLineCloseOthers<cr>")
 

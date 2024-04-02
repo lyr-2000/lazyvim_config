@@ -1,68 +1,77 @@
 local on_success = nil
 local jumpbackward = function(num)
-  vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-o>"]])
-end
-
-local debug = function(s)
-  print(s)
+	vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-o>"]])
 end
 
 local jumpforward = function(num)
-  vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-i>"]])
+	vim.cmd([[execute "normal! ]] .. tostring(num) .. [[\<c-i>"]])
 end
+
+local isValid = function (idx) 
+  local b = vim.api.nvim_buf_is_valid(idx)
+  if not b then 
+    return false
+  end
+  local k = vim.api.nvim_buf_get_name(idx)
+  if string.find(k,"neo-tree") ~= nil then 
+    print("knum"..k)
+    return false
+  end
+  return true
+end
+
 local backward = function()
-  local getjumplist = vim.fn.getjumplist()
-  local jumplist = getjumplist[1]
-  if #jumplist == 0 then
-    debug("error")
-    return
-  end
+	local getjumplist = vim.fn.getjumplist()
+	local jumplist = getjumplist[1]
+	if #jumplist == 0 then
+		return
+	end
 
-  -- plus one because of one index
-  local i = getjumplist[2] + 1
-  local j = i
-  local curBufNum = vim.fn.bufnr()
-  local targetBufNum = curBufNum
+	-- plus one because of one index
+	local i = getjumplist[2] + 1
+	local j = i
+	local curBufNum = vim.fn.bufnr()
+	local targetBufNum = curBufNum
 
-  while j > 1 and (curBufNum == targetBufNum or not vim.api.nvim_buf_is_valid(targetBufNum)) do
-    j = j - 1
-    targetBufNum = jumplist[j].bufnr
-  end
-  if targetBufNum ~= curBufNum and vim.api.nvim_buf_is_valid(targetBufNum) then
-    jumpbackward(i - j)
-    if on_success then
-      on_success()
-    end
-  end
+	while j > 1 and (curBufNum == targetBufNum or not isValid(targetBufNum)) do
+		j = j - 1
+		targetBufNum = jumplist[j].bufnr
+	end
+	if targetBufNum ~= curBufNum and isValid(targetBufNum) then
+		jumpbackward(i - j)
+		if on_success then
+			on_success()
+		end
+	end
 end
 
 local forward = function()
-  local getjumplist = vim.fn.getjumplist()
-  local jumplist = getjumplist[1]
-  if #jumplist == 0 then
-    return
-  end
+	local getjumplist = vim.fn.getjumplist()
+	local jumplist = getjumplist[1]
+	if #jumplist == 0 then
+		return
+	end
 
-  local i = getjumplist[2] + 1
-  local j = i
-  local curBufNum = vim.fn.bufnr()
-  local targetBufNum = curBufNum
+	local i = getjumplist[2] + 1
+	local j = i
+	local curBufNum = vim.fn.bufnr()
+	local targetBufNum = curBufNum
 
-  -- find the next different buffer
-  while j < #jumplist and (curBufNum == targetBufNum or vim.api.nvim_buf_is_valid(targetBufNum) == false) do
-    j = j + 1
-    targetBufNum = jumplist[j].bufnr
-  end
-  while j + 1 <= #jumplist and jumplist[j + 1].bufnr == targetBufNum and vim.api.nvim_buf_is_valid(targetBufNum) do
-    j = j + 1
-  end
-  if j <= #jumplist and targetBufNum ~= curBufNum and vim.api.nvim_buf_is_valid(targetBufNum) then
-    jumpforward(j - i)
+	-- find the next different buffer
+	while j < #jumplist and (curBufNum == targetBufNum or isValid(targetBufNum) == false) do
+		j = j + 1
+		targetBufNum = jumplist[j].bufnr
+	end
+	while j + 1 <= #jumplist and jumplist[j + 1].bufnr == targetBufNum and isValid(targetBufNum) do
+		j = j + 1
+	end
+	if j <= #jumplist and targetBufNum ~= curBufNum and isValid(targetBufNum) then
+		jumpforward(j - i)
 
-    if on_success then
-      on_success()
-    end
-  end
+		if on_success then
+			on_success()
+		end
+	end
 end
 
 local setup = function(cfg)
