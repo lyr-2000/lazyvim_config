@@ -1,8 +1,8 @@
 --
 return { -- disable catppuccin
-  -- {
-  --     "askfiy/SimpleNvim",
-  -- },
+  {
+    "tomasiser/vim-code-dark", --"codedark"
+  },
   {
     "ellisonleao/gruvbox.nvim",
     -- enabled = false
@@ -11,7 +11,7 @@ return { -- disable catppuccin
     "LazyVim/LazyVim",
     -- enable = false,
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = "codedark",
     },
   }, -- change trouble config
   {

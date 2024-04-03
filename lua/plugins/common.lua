@@ -9,7 +9,7 @@
 -- * override the configuration of LazyVim plugins
 return { -- add gruvbox
 -- {"ellisonleao/gruvbox.nvim"}, 
-{"leafOfTree/vim-preview"}, -- Configure LazyVim to load gruvbox
+-- {"leafOfTree/vim-preview"}, -- Configure LazyVim to load gruvbox
 -- {
 --     "LazyVim/LazyVim",
 --     opts = {
@@ -57,6 +57,7 @@ return { -- add gruvbox
         build = "make",
         config = function()
             require("telescope").load_extension("fzf")
+            -- todo: fzf extensions 
         end
     }
 }, -- add pyright to lspconfig

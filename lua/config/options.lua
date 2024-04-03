@@ -5,6 +5,8 @@
 
 local opt = vim.opt
 
+vim.g.autoformat = false
+
 opt.relativenumber = true
 opt.termguicolors = true
 opt.showcmd = true
@@ -20,7 +22,7 @@ set laststatus=2
 
 
 ]])
--- 
+--
 
 -- function! GotoJump()
 --     jumps
@@ -35,3 +37,4 @@ set laststatus=2
 --       endif
 --     endif
 --   endfunction
+

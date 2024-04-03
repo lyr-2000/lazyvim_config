@@ -14,8 +14,8 @@ local gkit = require("gkit")
 local gjump = require("gkit/bufjump")
 gjump.setupJumpFun()
 
-vim.cmd("nmap <C-_> gcc")
-vim.cmd("nmap <C-/> gcc")
+-- vim.cmd("nmap <C-_> gcc")
+-- vim.cmd("nmap <C-/> gcc")
 
 local map = vim.keymap.set
 local del = vim.keymap.del
@@ -24,8 +24,26 @@ del("n", "<c-_>", {})
 del("t", "<c-/>", {})
 del("t", "<c-_>", {})
 
--- map("n", "<c-/>", "gcc")
--- map("n", "<c-_>", "gcc")
+map("n", "<c-_>", "gcc")
+map("n", "<c-/>", "gcc")
+
+map("v", "<c-_>", "gc")
+map("v", "<c-/>", "gc")
+
+-- del("n", "<C-t>", {})
+-- map("n", "<leader>t", "<space>fT", { desc = "show ter" })
+del("n", "t", {})
+
+local lazyterm = function()
+  require("lazyvim.util").terminal.open(nil, { cwd = require("lazyvim.util").root.get() })
+end
+
+map("n", "<C-t>", lazyterm, { desc = "show ter" })
+-- map("n", "<A-t>", ":echo 'abc'", { desc = "show ter" })
+map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
+map("t", "<C-_>", "<cmd>close<cr>", { desc = "hide ter" })
+map("t", "<C-t>", "<cmd>close<cr>", { desc = "hide ter" })
+
 -- map("n", "<C-h>", function()
 -- print("hello")
 -- gjump.backward()
@@ -43,10 +61,10 @@ del("t", "<c-_>", {})
 
 --]]
 
-map("n", "<C-h>", "<C-o>", { desc = "prev change" })
-map("n", "<C-l>", "<C-i>", { desc = "next change" })
+map("n", "<a-[>", "<C-o>", { desc = "prev pos" })
+map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 
-map("n", "<C-u>", "<cmd>redo<cr>")
+map("n", "U", "<cmd>redo<cr>")
 
 map("n", "<S-h>", "^")
 map("n", "<S-l>", "$")
@@ -94,7 +112,10 @@ map("c", "<C-a>", "SudaWrite", {
 
 local builtin = require("telescope.builtin")
 -- grep search https://github.com/BurntSushi/ripgrep#installation
-map("n", "gf", builtin.live_grep)
+
+if builtin.live_grep ~= nil then
+  map("n", "gf", builtin.live_grep)
+end
 
 map("i", "<S-Insert>", "<ESC>pi")
 
@@ -196,31 +217,43 @@ vim.keymap.set("n", ">b", function()
 end, { desc = "Move current buffer to right" })
 
 -- Function to create or toggle a floating window
-local function toggle_float_win()
-  if float_win and vim.api.nvim_win_is_valid(float_win) then
-    -- If the floating window is already open, close it
-    vim.api.nvim_win_close(float_win, true)
-    float_win = nil
-  else
-    -- If the floating window is not open, create it
-    local buf = vim.api.nvim_create_buf(false, true)
-    local width = 40
-    local height = 10
-    local row = vim.o.lines - height - 3
-    local col = vim.o.columns - width - 3
-    float_win = vim.api.nvim_open_win(buf, true, {
-      relative = "editor",
-      width = width,
-      height = height,
-      row = row,
-      col = col,
-      style = "minimal",
-    })
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, { "Floating Window Content" })
-  end
-end
 
 -- demo
 -- map("n", "<C-q>", function()
 -- toggle_float_win()
 -- end)
+--
+
+local command_keymappings = {
+  ["FoldAll"] = "<leader>zc",
+  ["UnFoldAll"] = "<leader>zo",
+  ["FindCommands"] = { modes = "n,i,v", keys = "<C-h>" },
+}
+-- neovide use <D-key> represents the cmd key in mac
+local function convertNeovideCMDKey(key)
+  if vim.g.neovide then
+    return string.gsub(key, "M%-", "D-")
+  else
+    return key
+  end
+end
+
+local function getKey(keybinding)
+  if type(keybinding) == "string" then
+    return keybinding
+  else
+    return keybinding.keys
+  end
+end
+local function registerKeys()
+  for command, keybinding in pairs(command_keymappings) do
+    local key = convertNeovideCMDKey(getKey(keybinding))
+
+    local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
+    print(key, command)
+    vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", {})
+  end
+end
+
+print("hello")
+registerKeys()
