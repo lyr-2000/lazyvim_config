@@ -1,34 +1,165 @@
 return {
   {
-    "L3MON4D3/LuaSnip",
-    keys = function()
-      return {}
-    end,
-  },
-  {
     "hrsh7th/nvim-cmp",
     dependencies = {
       "hrsh7th/cmp-emoji",
     },
+    event = { "InsertEnter" },
     ---@param opts cmp.ConfigSchema
-    opts = function(_, opts)
+    opts = function()
+      -- vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
+      local defaults = require("cmp.config.default")()
+      local luasnip = require 'luasnip'
+      -- issue on trigger mannual :   https://github.com/hrsh7th/nvim-cmp/issues/528
+      -- help: https://github.com/hrsh7th/nvim-cmp/issues/531
+      local mode1 = {
+        completeopt = "menu,menuone,noinsert",
+        keyword_length = 3, -- then min length to trigger complete menu
+        keyword_pattern = ".*",
+      }
+      local enableAutoComplete = true
+      local disablePlugin = false 
+      if not enableAutoComplete then 
+        -- default is it
+         mode1.autocomplete = {
+          -- cmp.TriggerEvent.TextChanged,
+          -- cmp.TriggerEvent.InsertEnter,
+        }
+      end
+      if disablePlugin then 
+        mode1.autocomplete = false
+      end
 
-      opts.mapping = vim.tbl_extend("force", opts.mapping, {
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          -- This little snippet will confirm with tab, and if no entry is selected, will confirm the first item
-          if cmp.visible() then
-            local entry = cmp.get_selected_entry()
-            if not entry then
-              cmp.select_next_item({ behavior = cmp.SelectBehavior.Select })
-            else
-              cmp.confirm()
-            end
-          else
+      return {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        completion = mode1,
+        mapping = cmp.mapping.preset.insert({
+          ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+          ["<C-b>"] = cmp.mapping.scroll_docs(-4),
+          ["<C-f>"] = cmp.mapping.scroll_docs(4),
+          ["<C-i>"] = cmp.mapping.complete(),
+          ["<C-e>"] = cmp.mapping.abort(),
+          ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<S-CR>"] = cmp.mapping.confirm({
+            behavior = cmp.ConfirmBehavior.Replace,
+            select = true,
+          }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+          ["<C-CR>"] = function(fallback)
+            cmp.abort()
             fallback()
-          end
-        end, { "i", "s", "c" }),
-      })
+          end,
+
+          ["<Tab>"] = function(fallback)
+            if true or cmp.visible() then
+              cmp.mapping.confirm({
+
+                behavior = cmp.ConfirmBehavior.Replace,
+                select = true,
+              })(fallback)
+            end
+          end,
+        }),
+        sources = cmp.config.sources({
+          { name = "nvim_lsp" },
+          { name = "path" },
+        }, {
+          { name = "buffer" },
+        }),
+        formatting = {
+          format = function(_, item)
+            local icons = require("lazyvim.config").icons.kinds
+            if icons[item.kind] then
+              item.kind = icons[item.kind] .. item.kind
+            end
+            return item
+          end,
+        },
+        sorting = defaults.sorting,
+      }
     end,
   },
+
+
+
+  {
+    "hrsh7th/cmp-cmdline",
+    keys = { ":", "/", "?" }, -- lazy load cmp on more keys along with insert mode
+    dependencies = { "hrsh7th/nvim-cmp" },
+    opts = function()
+      local cmp = require("cmp")
+      return {
+        {
+          type = "/",
+          mapping = cmp.mapping.preset.cmdline(),
+          sources = {
+            { name = "buffer" },
+          },
+        },
+        {
+          type = ":",
+          mapping = cmp.mapping.preset.cmdline({
+
+            ["<Down>"] = {
+              c = function(fallback)
+                if cmp.visible() then
+                  cmp.select_next_item()
+                else
+                  fallback()
+                end
+              end,
+            },
+            ["<Up>"] = {
+              c = function(fallback)
+                if cmp.visible() then
+                  cmp.select_prev_item()
+                else
+                  fallback()
+                end
+              end,
+            },
+            ["<Tab>"] = {
+              c = function()
+                cmp.select_next_item()
+                cmp.select_prev_item()
+              end,
+            },
+          }),
+          sources = cmp.config.sources({
+            { name = "path" },
+          }, {
+            {
+              name = "cmdline",
+              option = {
+                ignore_cmds = { "Man", "!" },
+              },
+            },
+          }),
+        },
+      }
+    end,
+    config = function(_, opts)
+      local cmp = require("cmp")
+      vim.tbl_map(function(val)
+        cmp.setup.cmdline(val.type, val)
+      end, opts)
+    end,
+  },
+
 }
+
+
+
+
+
+
+
+
+
+
+

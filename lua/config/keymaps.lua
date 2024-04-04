@@ -43,6 +43,7 @@ map("n", "<C-t>", lazyterm, { desc = "show ter" })
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-_>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-t>", "<cmd>close<cr>", { desc = "hide ter" })
+map("t", "<C-l>", "clear<enter>", { desc = "clear terminal" })
 
 -- map("n", "<C-h>", function()
 -- print("hello")
@@ -177,13 +178,21 @@ map("n", "<C-n>", function()
   createFile()
 end)
 
+-- map("n,i","<C-i>",vim.diagnostic.open_float)
+
 map("n", "<C-i>", function()
+  print('end')
   if isdap() then
     local dap = require("dap")
     dap.step_into()
     return
+  else
   end
 end)
+
+
+
+
 map("n", "<C-o>", function()
   if isdap() then
     local dap = require("dap")
@@ -224,10 +233,13 @@ end, { desc = "Move current buffer to right" })
 -- end)
 --
 
+
 local command_keymappings = {
   ["FoldAll"] = "<leader>zc",
   ["UnFoldAll"] = "<leader>zo",
-  ["FindCommands"] = { modes = "n,i,v", keys = "<C-h>" },
+  ["FindCommands"] = { modes = "n,i,v", keys = "<C-p>" },
+  ["FormatCode"] = { modes = "n,v", keys = "<leader>fk" },
+  -- ["echo 'demo'"] = { modes = "n,v", keys = "<A-S-f>" },
 }
 -- neovide use <D-key> represents the cmd key in mac
 local function convertNeovideCMDKey(key)
@@ -255,5 +267,7 @@ local function registerKeys()
   end
 end
 
-print("hello")
 registerKeys()
+
+
+

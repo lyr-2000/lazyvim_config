@@ -12,6 +12,21 @@ return {
             callback = "echo 'abc'",
             description = "hello",
           },
+          {
+            name = "AddSnippet",
+            callback = function()
+              require("scissors").addNewSnippet()
+            end,
+            dependencies = { "https://github.com/chrisgrieser/nvim-scissors" },
+          },
+          {
+            name = "EditSnippet",
+            callback = function()
+              require("scissors").editSnippet()
+            end,
+            dependencies = { "https://github.com/chrisgrieser/nvim-scissors" },
+          },
+
         },
       })
     end,
@@ -26,7 +41,7 @@ return {
           enabled = true, -- This will find and focus the file in the active buffer every
         },
         -- time the current file is changed while the tree is open.
-        group_empty_dirs = true, -- when true, empty folders will be grouped together
+        group_empty_dirs = true,                -- when true, empty folders will be grouped together
         hijack_netrw_behavior = "open_default", -- netrw disabled, opening a directory opens neo-tree
       },
     },
