@@ -37,25 +37,36 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- https://github.com/RaafatTurki/hex.nvim/blob/master/lua/hex.lua
 
-local mp4 = require("gkit/mp4")
+-- local mp4 = require("gkit/mp4")
 
 -- -- 当打开 MP4 文件时自动调用显示信息的函数
-vim.api.nvim_create_autocmd("BufReadPre", {
-  group = augroup("MP4Viewer"),
-  pattern = { "*.mp4" },
-  callback = function()
-    if true then 
-        mp4.openWin()
-    end
-    -- local filename = vim.api.nvim_buf_get_name(bufnr)
-  end,
-})
+-- vim.api.nvim_create_autocmd("BufReadPre", {
+--   group = augroup("MP4Viewer"),
+--   pattern = { "*.mp4" },
+--   callback = function()
+--     if true then
+--         mp4.openWin("read")
+--     end
+--   end,
+-- })
 
-vim.api.nvim_create_autocmd("BufLeave", {
-  group = augroup("MP4ViewerClean"),
-  pattern = { "*" },
-  callback = function()
-    -- local lua = require("gkit/pdf")
-    mp4.closeWin()
-  end,
-})
+-- -- 当打开 MP4 文件时自动调用显示信息的函数
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   group = augroup("MP4ViewerEnter"),
+--   pattern = { "*.mp4" },
+--   callback = function()
+--     if true then 
+--         mp4.openWin("enter")
+--     end
+--     -- local filename = vim.api.nvim_buf_get_name(bufnr)
+--   end,
+-- })
+
+-- vim.api.nvim_create_autocmd("BufLeave", {
+--   group = augroup("MP4ViewerClean"),
+--   pattern = { "*" },
+--   callback = function()
+--     -- local lua = require("gkit/pdf")
+--     mp4.closeWin("leave")
+--   end,
+-- })
