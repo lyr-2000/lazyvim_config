@@ -1,20 +1,18 @@
-
-local enableCompletePlugin = false
+local enableCompletePlugin = true
 
 return {
   {
     "hrsh7th/nvim-cmp",
-    enabled =enableCompletePlugin,
+    enabled = enableCompletePlugin,
     dependencies = {
       "hrsh7th/cmp-emoji",
     },
-    event = { "InsertEnter" },
     ---@param opts cmp.ConfigSchema
     opts = function()
       -- vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
-      local luasnip = require 'luasnip'
+      -- local luasnip = require 'luasnip'
       -- issue on trigger mannual :   https://github.com/hrsh7th/nvim-cmp/issues/528
       -- help: https://github.com/hrsh7th/nvim-cmp/issues/531
       local mode1 = {
@@ -23,22 +21,23 @@ return {
         keyword_pattern = ".*",
       }
       local enableAutoComplete = true
-      local disablePlugin =false
-      if not enableAutoComplete then 
+      local disablePlugin = false
+      if not enableAutoComplete then
         -- default is it
-         mode1.autocomplete = {
+        mode1.autocomplete = {
           -- cmp.TriggerEvent.TextChanged,
           -- cmp.TriggerEvent.InsertEnter,
         }
       end
-      if disablePlugin then 
+      if disablePlugin then
         mode1.autocomplete = false
       end
 
       return {
         snippet = {
           expand = function(args)
-            luasnip.lsp_expand(args.body)
+            -- luasnip.lsp_expand(args.body)
+            vim.snippet.expand(args.body)
           end,
         },
         completion = mode1,
@@ -47,7 +46,9 @@ return {
           ["<C-p>"] = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
-          ["<C-i>"] = cmp.mapping.complete(),
+          ["<C-h>"] = cmp.mapping.complete(),
+          ["<A-/>"] = cmp.mapping.complete(),
+          ["<A-_>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),
           ["<CR>"] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
           ["<S-CR>"] = cmp.mapping.confirm({
@@ -73,23 +74,24 @@ return {
           { name = "nvim_lsp" },
           { name = "path" },
         }, {
-          { name = "buffer" ,
-          option = {
-            get_bufnrs = function ()
-              local bufs = {}
-              for _, win in ipairs(vim.api.nvim_list_wins()) do
-                local buf = vim.api.nvim_win_get_buf(win)
-                -- vim.bo[event.buf].buftype = 'nofile'
-                if vim.bo[buf].buftype ~= 'nofile' then 
-                  bufs[buf] = true
+          {
+            name = "buffer",
+            option = {
+              get_bufnrs = function()
+                local bufs = {}
+                for _, win in ipairs(vim.api.nvim_list_wins()) do
+                  local buf = vim.api.nvim_win_get_buf(win)
+                  -- vim.bo[event.buf].buftype = 'nofile'
+                  if vim.bo[buf].buftype ~= 'nofile' then
+                    bufs[buf] = true
+                  end
+                  return vim.tbl_keys(bufs)
                 end
                 return vim.tbl_keys(bufs)
               end
-              return vim.tbl_keys(bufs)
-            end 
-          }
-        
-        },
+            }
+
+          },
         }),
         formatting = {
           format = function(_, item)
@@ -147,8 +149,13 @@ return {
             ["<Tab>"] = {
               c = function()
                 cmp.select_next_item()
-                cmp.select_prev_item()
+                -- cmp.select_prev_item()
               end,
+            },
+            ['<CR>'] = {
+              c = cmp.mapping.confirm({
+                  select = true,
+              }),
             },
           }),
           sources = cmp.config.sources({
@@ -173,14 +180,3 @@ return {
   },
 
 }
-
-
-
-
-
-
-
-
-
-
-

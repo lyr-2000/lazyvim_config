@@ -2,8 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 --
--- This file is automatically loaded by lazyvim.config.init
--- local Util = require("lazyvim.util")
+-- This file is automatically loaded by lazyvim.config.init local Util = require("lazyvim.util")
 --
 -- -- DO NOT USE THIS IN YOU OWN CONFIG!!
 -- -- use `vim.keymap.set` instead
@@ -24,11 +23,6 @@ del("n", "<c-_>", {})
 del("t", "<c-/>", {})
 del("t", "<c-_>", {})
 
-map("n", "<c-_>", "gcc")
-map("n", "<c-/>", "gcc")
-
-map("v", "<c-_>", "gc")
-map("v", "<c-/>", "gc")
 
 -- del("n", "<C-t>", {})
 -- map("n", "<leader>t", "<space>fT", { desc = "show ter" })
@@ -68,8 +62,8 @@ map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 map("n", "U", "<cmd>redo<cr>")
 
 map("n", "f", "s")
-map({"n","v","o"}, "H", "^")
-map({"n","v","o"}, "L", "$")
+map({ "n", "v", "o" }, "H", "^")
+map({ "n", "v", "o" }, "L", "$")
 --  buffer切换
 map("n", "<A-h>", "<C-w>h")
 map("n", "<A-l>", "<C-w>l")
@@ -82,6 +76,10 @@ map("n", "<A-S-l>", "<cmd>vertical resize +2<cr>")
 map("n", "<A-i>", "<cmd>Telescope oldfiles<cr>")
 map("n", "<A-i>", "<cmd>Telescope oldfiles<cr>")
 map("n", "<A-;>", "<C-w>|")
+
+map("n", "<leader>p", "<nop>")
+
+
 
 -- map("n", "<A-q>", "<cmd>bp<bar>sp<bar>bn<bar>bd<CR>")
 
@@ -181,20 +179,51 @@ end)
 
 -- map("n,i","<C-i>",vim.diagnostic.open_float)
 
-map("n", "<C-i>", function()
-  print('end')
+
+map("n", "<C-k>", function()
+  -- print('end')
   if isdap() then
     local dap = require("dap")
-    dap.step_into()
+    dap.stop()
+    -- print("stop dap")
     return
   else
   end
 end)
 
-
-
-
 map("n", "<C-o>", function()
+  -- print('end')
+  if isdap() then
+    local dap = require("dap")
+    dap.step_out()
+    -- print("step out")
+    return
+  else
+  end
+end)
+
+map({"n"}, "<C-i>", function()
+  -- print('end')
+  if isdap() then
+    local dap = require("dap")
+    dap.step_into()
+    -- print("step into")
+    return
+  else
+    vim.cmd("<c-/>")
+  end
+end)
+
+map("i","<C-i>","<C-/>")
+
+map("n", "<C-c>", function()
+  if isdap() then
+    local dap = require("dap")
+    dap.run_to_cursor()
+    return
+  end
+end)
+map("n", "<C-m>", function()
   if isdap() then
     local dap = require("dap")
     dap.continue()
@@ -234,14 +263,24 @@ end, { desc = "Move current buffer to right" })
 -- end)
 --
 
+-- map("n", "<c-_>","<cmd>Commentary<cr>",{desc="toggle comment"})
+-- map("n", "<c-/>",  toggleComment,{desc="toggle comment"})
+--
+-- map("v", "<c-_>",  toggleComment,{desc="toggle comment"})
+-- map("v", "<c-/>",  toggleComment,{desc="toggle comment"})
 
 local command_keymappings = {
   ["FoldAll"] = "<leader>zc",
   ["UnFoldAll"] = "<leader>zo",
   ["FindCommands"] = { modes = "n,i,v", keys = "<C-p>" },
-  ["FormatCode"] = { modes = "n,v", keys = "<leader>fk" },
+  ["FormatCode"] = { modes = "n,v", keys = "<leader>ff", opt = { desc = "format entire fire" } },
+  -- ["FormatCode"] = { modes = "n,v", keys = "<leader>ff",opt = {desc="format entire fire"} },
+  ["Commentary"] = {
+    modes = "n", keys = { "<c-_>", "<c-/>" }
+  },
   -- ["echo 'demo'"] = { modes = "n,v", keys = "<A-S-f>" },
 }
+vim.keymap.set("v","<C-_>",":'<,'>Commentary<cr>")
 -- neovide use <D-key> represents the cmd key in mac
 local function convertNeovideCMDKey(key)
   if vim.g.neovide then
@@ -261,10 +300,17 @@ end
 local function registerKeys()
   for command, keybinding in pairs(command_keymappings) do
     local key = convertNeovideCMDKey(getKey(keybinding))
-
-    local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
-    print(key, command)
-    vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", {})
+    if type(key) == 'string' then
+      local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
+      local opt = keybinding.opt or {}
+      vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", opt)
+    else 
+      for _,key in pairs(key) do
+        local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
+        local opt = keybinding.opt or {}
+        vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", opt)
+      end
+    end
   end
 end
 
@@ -272,3 +318,21 @@ registerKeys()
 
 
 
+
+-- lang
+--
+--
+
+-- local range_formatting = function()
+--   local start_row, _ = unpack(vim.api.nvim_buf_get_mark(0, "<"))
+--   local end_row, _ = unpack(vim.api.nvim_buf_get_mark(0, ">"))
+--   vim.lsp.buf.format({
+--     range = {
+--       ["start"] = { start_row, 0 },
+--       ["end"] = { end_row, 0 },
+--     },
+--     async = true,
+--   })
+-- end
+
+-- vim.keymap.set({ "v" }, "<leader>ff", range_formatting, { desc = "Range format" })

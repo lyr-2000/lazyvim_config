@@ -19,22 +19,70 @@ set clipboard=unnamedplus
 
 vim.cmd([[
 set laststatus=2
-let g:airline_statusline_ontop=1
-let g:airline#extensions#tabline#enabled = 1
 ]])
---
 
--- function! GotoJump()
---     jumps
---     let j = input("Please select your jump: ")
---     if j != ''
---       let pattern = '\v\c^\+'
---       if j =~ pattern
---         let j = substitute(j, pattern, '', 'g')
---         execute "normal " . j . "\<c-i>"
---       else
---         execute "normal " . j . "\<c-o>"
---       endif
---     endif
---   endfunction
 
+-- 设置调试相关的字符和颜色
+local dap_breakpoint_color = {
+    breakpoint = {
+        ctermbg=0,
+        fg='#993939',
+        bg='#31353f',
+    },
+    logpoing = {
+        ctermbg=0,
+        fg='#61afef',
+        bg='#31353f',
+    },
+    stopped = {
+        ctermbg=0,
+        fg='#98c379',
+        bg='#31353f'
+    },
+}
+ 
+vim.api.nvim_set_hl(0, 'DapBreakpoint', dap_breakpoint_color.breakpoint)
+vim.api.nvim_set_hl(0, 'DapLogPoint', dap_breakpoint_color.logpoing)
+vim.api.nvim_set_hl(0, 'DapStopped', dap_breakpoint_color.stopped)
+ 
+-- 输入unicode的方法：ctrl + v + u 再输入unicode码
+-- 可在https://www.nerdfonts.com/cheat-sheet查询想要的字符
+local dap_breakpoint = {
+    error = {
+        text = "",
+        texthl = "DapBreakpoint",
+        linehl = "DapBreakpoint",
+        numhl = "DapBreakpoint",
+    },
+    condition = {
+        text = '',
+        texthl = 'DapBreakpoint',
+        linehl = 'DapBreakpoint',
+        numhl = 'DapBreakpoint',
+    },
+    rejected = {
+        text = "",
+        texthl = "DapBreakpoint",
+        linehl = "DapBreakpoint",
+        numhl = "DapBreakpoint",
+    },
+    logpoint = {
+        text = '',
+        texthl = 'DapLogPoint',
+        linehl = 'DapLogPoint',
+        numhl = 'DapLogPoint',
+    },
+    stopped = {
+        text = '',
+        texthl = 'DapStopped',
+        linehl = 'DapStopped',
+        numhl = 'DapStopped',
+    },
+}
+ 
+vim.fn.sign_define('DapBreakpoint', dap_breakpoint.error)
+vim.fn.sign_define('DapBreakpointCondition', dap_breakpoint.condition)
+vim.fn.sign_define('DapBreakpointRejected', dap_breakpoint.rejected)
+vim.fn.sign_define('DapLogPoint', dap_breakpoint.logpoint)
+vim.fn.sign_define('DapStopped', dap_breakpoint.stopped)
+-- end dap
