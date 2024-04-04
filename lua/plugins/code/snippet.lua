@@ -1,6 +1,10 @@
+
+local enableCompletePlugin = false
+
 return {
   {
     "hrsh7th/nvim-cmp",
+    enabled =enableCompletePlugin,
     dependencies = {
       "hrsh7th/cmp-emoji",
     },
@@ -19,7 +23,7 @@ return {
         keyword_pattern = ".*",
       }
       local enableAutoComplete = true
-      local disablePlugin = false 
+      local disablePlugin =false
       if not enableAutoComplete then 
         -- default is it
          mode1.autocomplete = {
@@ -69,7 +73,23 @@ return {
           { name = "nvim_lsp" },
           { name = "path" },
         }, {
-          { name = "buffer" },
+          { name = "buffer" ,
+          option = {
+            get_bufnrs = function ()
+              local bufs = {}
+              for _, win in ipairs(vim.api.nvim_list_wins()) do
+                local buf = vim.api.nvim_win_get_buf(win)
+                -- vim.bo[event.buf].buftype = 'nofile'
+                if vim.bo[buf].buftype ~= 'nofile' then 
+                  bufs[buf] = true
+                end
+                return vim.tbl_keys(bufs)
+              end
+              return vim.tbl_keys(bufs)
+            end 
+          }
+        
+        },
         }),
         formatting = {
           format = function(_, item)
@@ -91,6 +111,7 @@ return {
     "hrsh7th/cmp-cmdline",
     keys = { ":", "/", "?" }, -- lazy load cmp on more keys along with insert mode
     dependencies = { "hrsh7th/nvim-cmp" },
+    enabled = enableCompletePlugin,
     opts = function()
       local cmp = require("cmp")
       return {

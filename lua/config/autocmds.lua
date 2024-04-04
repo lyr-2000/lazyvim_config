@@ -37,7 +37,6 @@ vim.api.nvim_create_autocmd("FileType", {
 
 -- https://github.com/RaafatTurki/hex.nvim/blob/master/lua/hex.lua
 
--- local mp4 = require("gkit/mp4")
 
 -- -- 当打开 MP4 文件时自动调用显示信息的函数
 -- vim.api.nvim_create_autocmd("BufReadPre", {
@@ -51,16 +50,18 @@ vim.api.nvim_create_autocmd("FileType", {
 -- })
 
 -- -- 当打开 MP4 文件时自动调用显示信息的函数
--- vim.api.nvim_create_autocmd("BufEnter", {
---   group = augroup("MP4ViewerEnter"),
---   pattern = { "*.mp4" },
---   callback = function()
---     if true then 
---         mp4.openWin("enter")
---     end
---     -- local filename = vim.api.nvim_buf_get_name(bufnr)
---   end,
--- })
+vim.api.nvim_create_autocmd("BufReadPre", {
+  group = augroup("MP4ViewerEnter"),
+  pattern = { "*.mp4" },
+  callback = function(evt)
+    local mp4 = require("gkit/mp4")
+     -- mp4.openWin(evt)
+    local ok,err = pcall(mp4.openWin,evt)
+    if err ~= nil then 
+      print("ERROR: ",err)
+    end
+  end,
+})
 
 -- vim.api.nvim_create_autocmd("BufLeave", {
 --   group = augroup("MP4ViewerClean"),

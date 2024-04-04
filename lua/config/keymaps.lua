@@ -67,8 +67,9 @@ map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 
 map("n", "U", "<cmd>redo<cr>")
 
-map("n", "<S-h>", "^")
-map("n", "<S-l>", "$")
+map("n", "f", "s")
+map({"n","v","o"}, "H", "^")
+map({"n","v","o"}, "L", "$")
 --  buffer切换
 map("n", "<A-h>", "<C-w>h")
 map("n", "<A-l>", "<C-w>l")
