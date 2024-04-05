@@ -10,9 +10,15 @@
 --
 
 local gkit = require("gkit")
-local gjump = require("gkit/bufjump")
-gjump.setupJumpFun()
 
+local function isdap()
+  local dap = require("dap")
+  local status = dap.status()
+  if status == nil or status == "" then
+    return false
+  end
+  return true
+end
 -- vim.cmd("nmap <C-_> gcc")
 -- vim.cmd("nmap <C-/> gcc")
 
@@ -22,7 +28,6 @@ del("n", "<c-/>", {})
 del("n", "<c-_>", {})
 del("t", "<c-/>", {})
 del("t", "<c-_>", {})
-
 
 -- del("n", "<C-t>", {})
 -- map("n", "<leader>t", "<space>fT", { desc = "show ter" })
@@ -38,23 +43,10 @@ map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-_>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-t>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-l>", "clear<enter>", { desc = "clear terminal" })
+map("n", "f", "s", {  })
+map("n", "F", "s", {  })
 
--- map("n", "<C-h>", function()
--- print("hello")
--- gjump.backward()
--- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-o>"]])
---   -- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-o>"]])
---   -- vim.cmd([[execute "normal! ]] .. tostring("") .. [[\<c-o>"]])
--- end)
 
--- map("n", "<C-l>", function()
---   -- print("hello")
---   gjump.forward()
---   -- vim.cmd([[execute "normal! ]] .. tostring("1") .. [[\<c-i>"]])
---   -- vim.cmd([[execute "normal! ]] .. tostring("") .. [[\<c-i>"]])
--- end)
-
---]]
 
 map("n", "<a-[>", "<C-o>", { desc = "prev pos" })
 map("n", "<a-]>", "<C-i>", { desc = "next pos" })
@@ -78,8 +70,6 @@ map("n", "<A-i>", "<cmd>Telescope oldfiles<cr>")
 map("n", "<A-;>", "<C-w>|")
 
 map("n", "<leader>p", "<nop>")
-
-
 
 -- map("n", "<A-q>", "<cmd>bp<bar>sp<bar>bn<bar>bd<CR>")
 
@@ -113,9 +103,14 @@ map("c", "<C-a>", "SudaWrite", {
 local builtin = require("telescope.builtin")
 -- grep search https://github.com/BurntSushi/ripgrep#installation
 
-if builtin.live_grep ~= nil then
-  map("n", "gf", builtin.live_grep)
-end
+map("n", "gff", function()
+  require("telescope.builtin").find_files({
+    cwd = vim.fn.getcwd()
+  })
+
+end, {
+  desc = "find files",
+})
 
 map("i", "<S-Insert>", "<ESC>pi")
 
@@ -149,14 +144,6 @@ map("n", "<C-x>", function()
   end
 end)
 
-local function isdap()
-  local dap = require("dap")
-  local status = dap.status()
-  if status == nil or status == "" then
-    return false
-  end
-  return true
-end
 
 local function createFile()
   -- local api = require("nvim-tree.api")
@@ -178,7 +165,6 @@ map("n", "<C-n>", function()
 end)
 
 -- map("n,i","<C-i>",vim.diagnostic.open_float)
-
 
 map("n", "<C-k>", function()
   -- print('end')
@@ -202,19 +188,25 @@ map("n", "<C-o>", function()
   end
 end)
 
-map({"n"}, "<C-i>", function()
-  -- print('end')
+map({ "n" }, "<C-i>", function()
   if isdap() then
     local dap = require("dap")
     dap.step_into()
     -- print("step into")
     return
   else
-    vim.cmd("<c-/>")
+    -- vim.cmd("<C-h>")
+  
   end
 end)
 
-map("i","<C-i>","<C-/>")
+
+
+map({"n","i"}, "<C-l>", function () 
+  -- todo , 判断类型
+  vim.cmd(':execute "normal! \\<ESC>A;"')
+end, { desc = "<nop>" })
+
 
 map("n", "<C-c>", function()
   if isdap() then
@@ -276,11 +268,12 @@ local command_keymappings = {
   ["FormatCode"] = { modes = "n,v", keys = "<leader>ff", opt = { desc = "format entire fire" } },
   -- ["FormatCode"] = { modes = "n,v", keys = "<leader>ff",opt = {desc="format entire fire"} },
   ["Commentary"] = {
-    modes = "n", keys = { "<c-_>", "<c-/>" }
+    modes = "n",
+    keys = { "<c-_>", "<c-/>" },
   },
   -- ["echo 'demo'"] = { modes = "n,v", keys = "<A-S-f>" },
 }
-vim.keymap.set("v","<C-_>",":'<,'>Commentary<cr>")
+vim.keymap.set("v", "<C-_>", ":'<,'>Commentary<cr>")
 -- neovide use <D-key> represents the cmd key in mac
 local function convertNeovideCMDKey(key)
   if vim.g.neovide then
@@ -300,12 +293,12 @@ end
 local function registerKeys()
   for command, keybinding in pairs(command_keymappings) do
     local key = convertNeovideCMDKey(getKey(keybinding))
-    if type(key) == 'string' then
+    if type(key) == "string" then
       local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
       local opt = keybinding.opt or {}
       vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", opt)
-    else 
-      for _,key in pairs(key) do
+    else
+      for _, key in pairs(key) do
         local modes = keybinding.modes and vim.split(keybinding.modes, ",") or { "n" }
         local opt = keybinding.opt or {}
         vim.keymap.set(modes, key, "<CMD>" .. command .. "<CR>", opt)
@@ -315,9 +308,6 @@ local function registerKeys()
 end
 
 registerKeys()
-
-
-
 
 -- lang
 --
@@ -336,3 +326,43 @@ registerKeys()
 -- end
 
 -- vim.keymap.set({ "v" }, "<leader>ff", range_formatting, { desc = "Range format" })
+
+map("n", "<leader>cc", function(evt)
+  if vim.bo.filetype == nil then
+    error("invalid")
+    return
+  end
+  local ft = vim.bo.filetype
+  if ft == "cpp" then
+    vim.cmd([[
+            !g++ -g % -o %<.out
+        ]])
+  else
+    print("illegal file type " .. ft)
+  end
+  -- vim.cmd(
+  --   [[
+  -- func! compileRunGcc()
+  --   exec "w"
+  --   if &filetype == 'c'
+  --           exec "!g++  % -o %<"
+  --   elseif &filetype == 'cpp'
+  --           exec "!g++  % -o %<"
+  --   endif
+  --
+  --   endfunc
+  -- <cmd>compileRunGcc()<cr>
+  -- ]])
+end)
+
+map("n", "<leader>kp", function()
+  -- open curr dir
+  vim.cmd(":tabe %:h")
+end, {
+  desc = "open vim config ",
+})
+
+
+
+
+

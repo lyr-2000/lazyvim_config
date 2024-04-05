@@ -47,6 +47,7 @@ return {
           ["<C-b>"] = cmp.mapping.scroll_docs(-4),
           ["<C-f>"] = cmp.mapping.scroll_docs(4),
           ["<C-h>"] = cmp.mapping.complete(),
+          ["<C-i>"] = cmp.mapping.complete(),
           ["<A-/>"] = cmp.mapping.complete(),
           ["<A-_>"] = cmp.mapping.complete(),
           ["<C-e>"] = cmp.mapping.abort(),

@@ -15,10 +15,14 @@ dap.configurations.cpp = {
     type = "cppdbg",
     request = "launch",
     program = function()
-      local dir = vim.fn.getcwd() .. "/a.out"
+      local dir1 = vim.fn.expand("%:p:h")
+      -- local dir1 = vim.expand("%p:h")
+      -- dir2 = vim.fn.getcwd()
+      local dir = dir1 .. "/main.out"
       return vim.fn.input("Path to exeBin: ", dir , "file")
     end,
-    console = 'integratedTerminal',
+    -- console = 'console',
+    console = 'external',
     cwd = "${workspaceFolder}",
     stopAtEntry = true,
   },

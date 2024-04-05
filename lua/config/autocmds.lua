@@ -55,10 +55,10 @@ vim.api.nvim_create_autocmd("BufReadPre", {
   pattern = { "*.mp4" },
   callback = function(evt)
     local mp4 = require("gkit/mp4")
-     -- mp4.openWin(evt)
-    local ok,err = pcall(mp4.openWin,evt)
-    if not ok then 
-      print("ERROR: ",err)
+    -- mp4.openWin(evt)
+    local ok, err = pcall(mp4.openWin, evt)
+    if not ok then
+      print("ERROR: ", err)
     end
   end,
 })
@@ -116,10 +116,34 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 
--- Disable the concealing in some file formats
+-- Disable the concealing in some file formats 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "markdown" },
   callback = function()
     vim.wo.conceallevel = 0
   end,
 })
+
+
+
+
+  --Automatically switch to Chinese input method when code comments, otherwise switch to English input method
+  
+  require("gkit/fcitx").setup({
+    text = { -- 自动切换输入法的文档 
+      "*.md",
+      "*.txt",
+    },
+    code = { -- 注释时自动切换输入法的语言,
+      "*.lua",
+      "*.c",
+      "*.cpp",
+      "*.py",
+      "*.go",
+      "*.lua",
+    },
+    en = "fcitx-remote -o",
+    zh = "fcitx-remote -c",
+    check = "fcitx-remote",
+    zh_code = 1, -- fcitx_code=1 is chinese input method mode
+  })
