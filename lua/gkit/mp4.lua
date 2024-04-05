@@ -1,10 +1,10 @@
-local float_win = nil
+-- local float_win = nil
 local prevbuf = -1
 local shellv = "google-chrome"
 
-local prefile = ""
+-- local prefile = ""
 local function debug(s)
-  -- print(s)
+   -- print(s)
 end
 
 -- local function toggle_float_win(closeview)
@@ -100,9 +100,9 @@ local function openWin(event)
 
   local buf = vim.api.nvim_create_buf(true,true)
   local filename = vim.fn.expand("%:p")
-  if string.find(filename,".mp4") == nil then
-      return
-  end
+  -- if string.find(filename,".mp4") == nil then
+  --     return
+  -- end
   local width = vim.o.columns - 4
   local height = 11
   if (vim.o.columns >= 85) then
@@ -123,7 +123,7 @@ local function openWin(event)
     buffer = buf,
     callback = function()
       debug("vcl " .. filename)
-      local ret = vim.fn.system("nohup " .. shellv .. " " .. filename .. " &")
+      local ret = vim.fn.system("nohup " .. shellv .. " '" .. filename .. "' &")
       debug(ret)
     end
 
@@ -133,14 +133,15 @@ local function openWin(event)
   vim.keymap.set( "n", "f", "", {
     buffer = buf,
     callback = function()
-      print(ppath)
-      local ret = vim.fn.system("nohup " .. "open " .. " " .. ppath .. "" .. " ")
+      debug(ppath)
+      local ret = vim.fn.system("nohup " .. "open " .. " '" .. ppath .. "'" .. " ")
       debug(ret)
     end,
     silent = true
   })
   vim.api.nvim_set_current_buf(buf)
   vim.api.nvim_buf_delete(event.buf,{force=true})
+  vim.api.nvim_buf_set_name(buf,filename ..".dashboard")
   -- print('done it end')
   -- local float_win = vim.api.nvim_open_win(buf, true, {
   --   relative = "editor",

@@ -50,9 +50,9 @@ vim.api.nvim_create_autocmd("FileType", {
 -- })
 
 -- -- 当打开 MP4 文件时自动调用显示信息的函数
-vim.api.nvim_create_autocmd("BufReadPre", {
+vim.api.nvim_create_autocmd("BufEnter", {
   group = augroup("MP4ViewerEnter"),
-  pattern = { "*.mp4" },
+  pattern = { "*.mp4" ,"*.pdf","*.mp3","*.avi"},
   callback = function(evt)
     local mp4 = require("gkit/mp4")
     -- mp4.openWin(evt)

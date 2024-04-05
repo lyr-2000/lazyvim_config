@@ -131,10 +131,12 @@ local function domsg(s)
   vim.notify(s)
 end
 
-map("n", "<leader>a", function()
-  gkit.test()
-  vim.notify("heloworld")
-end)
+map("n","<leader>a","ggVG",{desc = "select all"})
+-- map("n", "<leader>a", function()
+--   -- gkit.test()
+--   -- vim.notify("heloworld")
+--   vim.cmd("ggVG")
+-- end)
 
 map("n", "<C-x>", function()
   if isdap() then
@@ -364,3 +366,6 @@ map("n", "<leader>kr", function()
   vim.notify("test run")
   vim.cmd("CompetiTest run")
 end,{desc = "runt test"})
+
+-- map({"n","i"},"<c-s-{>","zc")
+-- map({"n","i"},"<c-s-}>","zo")

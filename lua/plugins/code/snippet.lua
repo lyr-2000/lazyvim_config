@@ -149,8 +149,9 @@ return {
             },
             ["<Tab>"] = {
               c = function()
+                -- auto select the first items
                 cmp.select_next_item()
-                -- cmp.select_prev_item()
+                cmp.select_prev_item()
               end,
             },
             ['<CR>'] = {
