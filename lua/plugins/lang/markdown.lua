@@ -7,7 +7,7 @@ return {
 	{
 		"HakonHarnes/img-clip.nvim",
 		event = "BufEnter",
-        branch = 'fix/insert-base64-markup',
+    branch = 'fix/insert-base64-markup',
 		opts = {
 			default = {
 				dir_path = "static", -- directory path to save images to, can be relative (cwd or current file) or absolute
@@ -42,4 +42,32 @@ return {
 			vim.fn["mkdp#util#install"]()
 		end,
 	},
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = {
+      linters_by_ft = {
+       -- markdown = { "markdownlint" },
+         markdown = { },
+      },
+    },
+  }
+  -- {
+  --   "mfussenegger/nvim-lint",
+  --   -- enabled = true,
+  --   optional = true,
+  --   opts = {
+  --     linters_by_ft = {markdown = { "markdownlint" }},
+  --   },
+  --   config = function()
+  --     -- local markdownlint = require("lint").linters.markdownlint
+  --     -- markdownlint.args = {
+  --     --   "--disable",
+  --     --   "MD013", "MD007",
+  --     --    -- "MD012",
+  --     --   "--",    -- Required
+  --     -- }
+  --   end
+  -- }
+
 }

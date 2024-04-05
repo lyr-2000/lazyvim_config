@@ -46,10 +46,8 @@ map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-_>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-t>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-l>", "clear<enter>", { desc = "clear terminal" })
-map("n", "f", "s", {  })
-map("n", "F", "s", {  })
-
-
+map("n", "f", "s", {})
+map("n", "F", "s", {})
 
 map("n", "<a-[>", "<C-o>", { desc = "prev pos" })
 map("n", "<a-]>", "<C-i>", { desc = "next pos" })
@@ -108,9 +106,8 @@ local builtin = require("telescope.builtin")
 
 map("n", "gff", function()
   require("telescope.builtin").find_files({
-    cwd = vim.fn.getcwd()
+    cwd = vim.fn.getcwd(),
   })
-
 end, {
   desc = "find files",
 })
@@ -146,7 +143,6 @@ map("n", "<C-x>", function()
     return
   end
 end)
-
 
 local function createFile()
   -- local api = require("nvim-tree.api")
@@ -199,17 +195,13 @@ map({ "n" }, "<C-i>", function()
     return
   else
     -- vim.cmd("<C-h>")
-  
   end
 end)
 
-
-
-map({"n","i"}, "<C-l>", function () 
+map({ "n", "i" }, "<C-l>", function()
   -- todo , 判断类型
   vim.cmd(':execute "normal! \\<ESC>A;"')
 end, { desc = "<nop>" })
-
 
 map("n", "<C-c>", function()
   if isdap() then
@@ -267,7 +259,7 @@ end, { desc = "Move current buffer to right" })
 local command_keymappings = {
   ["FoldAll"] = "<leader>zc",
   ["UnFoldAll"] = "<leader>zo",
-  ["MarkdownPreview"] = { modes = "n", keys = {"<leader>kv","<C-k>v"},opt={desc="preview markdown"} },
+  ["MarkdownPreview"] = { modes = "n", keys = { "<leader>kv", "<C-k>v" }, opt = { desc = "preview markdown" } },
   ["FindCommands"] = { modes = "n,i,v", keys = "<C-p>" },
   ["FormatCode"] = { modes = "n,v", keys = "<leader>ff", opt = { desc = "format entire fire" } },
   -- ["FormatCode"] = { modes = "n,v", keys = "<leader>ff",opt = {desc="format entire fire"} },
@@ -344,7 +336,7 @@ map("n", "<leader>cc", function(evt)
   else
     print("illegal file type compile " .. ft)
   end
-end,{desc="compile code file"})
+end, { desc = "compile code file" })
 
 map("n", "<leader>kp", function()
   -- open curr dir
@@ -353,7 +345,22 @@ end, {
   desc = "open vim config ",
 })
 
+map("v", "gr", ":s///g<left><left><left>", { desc = "replace global" })
+map("n", "gr", ":s///g<left><left><left>", { desc = "replace word" })
 
+-- map("n","gk",function(opt)
+--   return vim.lsp.buf.references(opt)
+-- end,{desc="replace word"})
 
+map("n", "gk", "<cmd>Telescope lsp_references<CR>", { desc = "References" })
 
+map("n", "<leader>ka", function()
+  vim.cmd("CompetiTest add_testcase")
+end,{desc="add test case"})
 
+map("n", "<leader>kd", "<cmd>CompetiTest delete_testcase<cr>",{desc = "del test"})
+map("n", "<leader>ke", "<cmd>CompetiTest edit_testcase<cr>",{desc = "edit test"})
+map("n", "<leader>kr", function()
+  vim.notify("test run")
+  vim.cmd("CompetiTest run")
+end,{desc = "runt test"})

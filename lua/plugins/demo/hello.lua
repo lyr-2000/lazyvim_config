@@ -1,3 +1,6 @@
+
+if true then return {} end
+
 local function toggle_float_win()
   if float_win and vim.api.nvim_win_is_valid(float_win) then
     -- If the floating window is already open, close it
