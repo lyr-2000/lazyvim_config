@@ -124,6 +124,16 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
+local safe = require("gkit/safe")
+
+-- Disable the concealing in some file formats 
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "markdown" },
+  callback = function(event)
+    safe.run(require("gkit/md").bindkey,event)
+  end,
+})
+
 
 
 

@@ -16,12 +16,12 @@ return {
 				use_absolute_path = false, -- expands dir_path to an absolute path
 				relative_to_current_file = false, -- make dir_path relative to current file rather than the cwd
 				relative_template_path = true, -- make file path in the template relative to current file rather than the cwd
-				prompt_for_file_name = true, -- ask user for file name before saving, leave empty to use default
-				show_dir_path_in_prompt = false, -- show dir_path in prompt when prompting for file name
+				prompt_for_file_name = false, -- ask user for file name before saving, leave empty to use default
+				show_dir_path_in_prompt = true, -- show dir_path in prompt when prompting for file name
 				use_cursor_in_template = true, -- jump to cursor position in template after pasting
-				insert_mode_after_paste = true, -- enter insert mode after pasting the markup code
-				embed_image_as_base64 = true, -- paste image as base64 string instead of saving to file
-                process_cmd = "convert -quality 25 - -",
+				insert_mode_after_paste = false, -- enter insert mode after pasting the markup code
+				embed_image_as_base64 = false, -- paste image as base64 string instead of saving to file
+				process_cmd = "convert -quality 25 - -",
 				max_base64_size = 1000, -- max size of base64 string in KB
 				template = "$FILE_PATH", -- default template
 

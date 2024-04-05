@@ -37,6 +37,9 @@ local lazyterm = function()
   require("lazyvim.util").terminal.open(nil, { cwd = require("lazyvim.util").root.get() })
 end
 
+-- map("n","<C-scrollWheelUp>","<C-=>")
+-- map("n","<C-scrollWheelDown>","<C-->")
+
 map("n", "<C-t>", lazyterm, { desc = "show ter" })
 -- map("n", "<A-t>", ":echo 'abc'", { desc = "show ter" })
 map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
@@ -264,6 +267,7 @@ end, { desc = "Move current buffer to right" })
 local command_keymappings = {
   ["FoldAll"] = "<leader>zc",
   ["UnFoldAll"] = "<leader>zo",
+  ["MarkdownPreview"] = { modes = "n", keys = {"<leader>kv","<C-k>v"},opt={desc="preview markdown"} },
   ["FindCommands"] = { modes = "n,i,v", keys = "<C-p>" },
   ["FormatCode"] = { modes = "n,v", keys = "<leader>ff", opt = { desc = "format entire fire" } },
   -- ["FormatCode"] = { modes = "n,v", keys = "<leader>ff",opt = {desc="format entire fire"} },
@@ -338,22 +342,9 @@ map("n", "<leader>cc", function(evt)
             !g++ -g % -o %<.out
         ]])
   else
-    print("illegal file type " .. ft)
+    print("illegal file type compile " .. ft)
   end
-  -- vim.cmd(
-  --   [[
-  -- func! compileRunGcc()
-  --   exec "w"
-  --   if &filetype == 'c'
-  --           exec "!g++  % -o %<"
-  --   elseif &filetype == 'cpp'
-  --           exec "!g++  % -o %<"
-  --   endif
-  --
-  --   endfunc
-  -- <cmd>compileRunGcc()<cr>
-  -- ]])
-end)
+end,{desc="compile code file"})
 
 map("n", "<leader>kp", function()
   -- open curr dir
