@@ -6,9 +6,25 @@ return {
     enabled = enableCompletePlugin,
     dependencies = {
       "hrsh7th/cmp-emoji",
+      {
+        "tzachar/cmp-tabnine",
+        build = {
+          -- LazyVim.is_win() and "pwsh -noni .\\install.ps1" or "./install.sh",
+          -- ":CmpTabnineHub",
+        },
+        dependencies = "hrsh7th/nvim-cmp",
+        opts = {
+          max_lines = 1000,
+          max_num_results = 3,
+          sort = true,
+        },
+        config = function(_, opts)
+          require("cmp_tabnine.config"):setup(opts)
+        end,
+      },
     },
     ---@param opts cmp.ConfigSchema
-    opts = function()
+    opts = function(_, opts)
       -- vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require("cmp")
       local defaults = require("cmp.config.default")()
@@ -33,13 +49,13 @@ return {
         mode1.autocomplete = false
       end
 
-      return {
-        snippet = {
-          expand = function(args)
-            -- luasnip.lsp_expand(args.body)
-            vim.snippet.expand(args.body)
-          end,
-        },
+      local rw = {
+        -- snippet = {
+        --   expand = function(args)
+        --     -- luasnip.lsp_expand(args.body)
+        --     vim.snippet.expand(args.body)
+        --   end,
+        -- },
         completion = mode1,
         mapping = cmp.mapping.preset.insert({
           ["<C-n>"] = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
@@ -71,29 +87,29 @@ return {
             end
           end,
         }),
-        sources = cmp.config.sources({
-          { name = "nvim_lsp" },
-          { name = "path" },
-        }, {
-          {
-            name = "buffer",
-            option = {
-              get_bufnrs = function()
-                local bufs = {}
-                for _, win in ipairs(vim.api.nvim_list_wins()) do
-                  local buf = vim.api.nvim_win_get_buf(win)
-                  -- vim.bo[event.buf].buftype = 'nofile'
-                  if vim.bo[buf].buftype ~= 'nofile' then
-                    bufs[buf] = true
-                  end
-                  return vim.tbl_keys(bufs)
-                end
-                return vim.tbl_keys(bufs)
-              end
-            }
-
-          },
-        }),
+        -- sources = cmp.config.sources({
+        --   { name = "nvim_lsp" },
+        --   { name = "path" },
+        -- }, {
+        --   {
+        --     name = "buffer",
+        --     option = {
+        --       get_bufnrs = function()
+        --         local bufs = {}
+        --         for _, win in ipairs(vim.api.nvim_list_wins()) do
+        --           local buf = vim.api.nvim_win_get_buf(win)
+        --           -- vim.bo[event.buf].buftype = 'nofile'
+        --           if vim.bo[buf].buftype ~= 'nofile' then
+        --             bufs[buf] = true
+        --           end
+        --           return vim.tbl_keys(bufs)
+        --         end
+        --         return vim.tbl_keys(bufs)
+        --       end
+        --     }
+        --
+        --   },
+        -- }),
         formatting = {
           format = function(_, item)
             local icons = require("lazyvim.config").icons.kinds
@@ -105,9 +121,12 @@ return {
         },
         sorting = defaults.sorting,
       }
+      -- rewrite default mapping config
+      opts.mapping = rw.mapping
+
+      return opts
     end,
   },
-
 
 
   {
@@ -156,7 +175,7 @@ return {
             },
             ['<CR>'] = {
               c = cmp.mapping.confirm({
-                  select = true,
+                select = true,
               }),
             },
           }),

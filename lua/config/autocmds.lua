@@ -130,7 +130,7 @@ local safe = require("gkit/safe")
 -- })
 
 if safe ~= nil then 
-  safe.run(require("gkit/md").bindkey)
+  safe.run(require("gkit/md").setup)
 end
 
 
@@ -155,3 +155,5 @@ end
     check = "fcitx-remote",
     zh_code = 1, -- fcitx_code=1 is chinese input method mode
   })
+
+require("gkit/lang").setup()

@@ -151,7 +151,9 @@ local function setup(opt)
   end
 end
 
+local function setupe(opt)
+end
 
 return {
-  setup = setup
+  setup = setupe
 }

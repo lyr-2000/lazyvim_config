@@ -9,9 +9,11 @@ local function pasteImage(evt)
     buffer = evt.buf,
     silent = true,
     callback= function()
+      -- use plugin default command
       vim.cmd("PasteImage")
       -- local cwd = vim.fn.getcwd()
       -- require("img-clip").paste_image({},tostring(cwd).."/".."static/image/mdfiles/")
+      -- custom options 
     end
   })
 
@@ -31,6 +33,7 @@ local function bindkey()
     group = augroup("markdownkey"),
     pattern = { "markdown" },
     callback = function(event)
+      -- <c-v> to pasteImage  in markdown file
       run(pasteImage,event)
     end,
   })
@@ -46,7 +49,7 @@ end
 
 
 return {
-  bindkey = bindkey
+  setup = bindkey
 }
 
 
@@ -67,6 +70,7 @@ return {
       })
     end
   })
+
 
 --
 --]]
