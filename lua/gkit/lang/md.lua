@@ -10,7 +10,19 @@ local function pasteImage(evt)
     silent = true,
     callback= function()
       -- use plugin default command
+
+      local d = require("img-clip.clipboard")
+      if not d.content_is_image() then  
+        
+        vim.cmd("normal! p")
+        return
+      end
       vim.cmd("PasteImage")
+      -- local img = require("img-clip.clipboard")
+      -- if img.content_is_image() then 
+      -- else 
+      --   vim.cmd("p")
+      -- end
       -- local cwd = vim.fn.getcwd()
       -- require("img-clip").paste_image({},tostring(cwd).."/".."static/image/mdfiles/")
       -- custom options 

@@ -117,7 +117,7 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 
 
 
-local safe = require("gkit/safe")
+-- local safe = require("gkit/safe")
 
 -- -- Disable the concealing in some file formats 
 -- vim.api.nvim_create_autocmd("BufEnter", {
@@ -129,9 +129,9 @@ local safe = require("gkit/safe")
 --   end,
 -- })
 
-if safe ~= nil then 
-  safe.run(require("gkit/md").setup)
-end
+-- if safe ~= nil then 
+--   safe.run(require("gkit/md").setup)
+-- end
 
 
 
