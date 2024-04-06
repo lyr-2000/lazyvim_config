@@ -1,5 +1,5 @@
 
-local transparent = false
+local transparent = true
 
 
 local function setupBg()
@@ -10,13 +10,13 @@ local function setupBg()
 --  hi Normal       ctermbg=none  guibg=none
   vim.cmd([[
 
- hi CursorLineNr               guibg=none
- hi EndOfBuffer                guibg=none
- hi Folded                     guibg=none
- hi LineNr       ctermbg=none  guibg=none
- hi SignColumn   ctermbg=none  guibg=none
-hi Normal ctermbg=none guibg=none
-hi NonText ctermbg=none guibg=none
+  hi CursorLineNr               guibg=none
+  hi EndOfBuffer                guibg=none
+  hi Folded                     guibg=none
+  hi LineNr       ctermbg=none  guibg=none
+  hi SignColumn   ctermbg=none  guibg=none
+  hi Normal ctermbg=none guibg=none
+  hi NonText ctermbg=none guibg=none
   ]])
 end
 

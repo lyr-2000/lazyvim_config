@@ -46,15 +46,16 @@ map("t", "<C-/>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-_>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-t>", "<cmd>close<cr>", { desc = "hide ter" })
 map("t", "<C-l>", "clear<enter>", { desc = "clear terminal" })
-map("n", "f", "s", {})
-map("n", "F", "s", {})
+
+-- del("n","f",{})
+-- map({"n","x","o"}, "f", function() require("flash").jump() end, {desc = "map func"})
+-- map({"n","x","o"}, "F", function() require("flash").jump() end, {desc = "map func"})
 
 map("n", "<a-[>", "<C-o>", { desc = "prev pos" })
 map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 
 map("n", "U", "<cmd>redo<cr>")
 
-map("n", "f", "s")
 map({ "n", "v", "o" }, "H", "^")
 map({ "n", "v", "o" }, "L", "$")
 --  buffer切换
@@ -105,7 +106,7 @@ local builtin = require("telescope.builtin")
 -- grep search https://github.com/BurntSushi/ripgrep#installation
 
 map("n", "gff", function()
-  require("telescope.builtin").find_files({
+  require("telescope.builtin").live_grep({
     cwd = vim.fn.getcwd(),
   })
 end, {
