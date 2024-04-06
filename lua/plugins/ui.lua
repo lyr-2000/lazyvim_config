@@ -67,11 +67,18 @@ set enc=utf-8
   {
     "simrat39/symbols-outline.nvim",
     cmd = "SymbolsOutline",
-    keys = { {
-      "<leader>cs",
-      "<cmd>SymbolsOutline<cr>",
-      desc = "Symbols Outline",
-    } },
+    keys = { 
+      {
+        "<leader>cs",
+        "<cmd>SymbolsOutline<cr>",
+        desc = "Symbols Outline",
+      },
+      {
+        "<leader>o",
+        "<cmd>SymbolsOutline<cr>",
+        desc = "Symbols Outline",
+      } 
+    },
     config = true,
   },
   {
@@ -88,10 +95,9 @@ set enc=utf-8
 ⣿⣿⣿⣿⡌⢿⣿⣀⣸⣿⡟⠀⠀⢀⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣄⠈⠛⠛⠋⠀⠀⢠⣾⣿⣿⣿⣿
 ⣿⣿⣿⣿⣿⣿⣷⣤⣀⣠⣤⣾⣿⣿⣿⣿⣿⣿
-
             ]]
 
-      logo = string.rep("\n", 8) .. logo .. "\n\n"
+      logo = string.rep("\n", 5) .. logo .. "\n\n"
       opts.config.header = vim.split(logo, "\n")
       opts.theme = "doom"
     end,

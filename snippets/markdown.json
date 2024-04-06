@@ -1,0 +1,322 @@
+{
+	"mermaid": {
+		"prefix": "mermaid",
+		"body": [
+			"{{< mermaid >}}",
+			"```mermaid",
+			"graph TB",
+			"$1",
+			"style begin fill:red",
+			"style begin color:white",
+			"```",
+			"{{< /mermaid >}}",
+			"$2"
+		],
+		"description": "Mermaid diagram"
+	},
+	"tag": {
+		"prefix": "tag",
+		"body": [
+			"{{< tag >}} $1 {{< /tag >}}"
+		],
+		"description": "hugo tags"
+	},
+	"front-matter": {
+		"prefix": [
+			"---"
+		],
+		"body": [
+			"---",
+			"title: \"${TM_FILENAME_BASE}\"",
+			"date: \"${CURRENT_YEAR}-${CURRENT_MONTH}-${CURRENT_DATE} ${CURRENT_HOUR}:${CURRENT_MINUTE}:${CURRENT_SECOND}\"",
+			"categories: [\"${TM_DIRECTORY}\"]",
+			"tags: [\"${TM_DIRECTORY}\"]",
+			"author: \"lyr\"",
+			"draft: false",
+			"\n---\n$2"
+		],
+		"description": "hugo front matter"
+	},
+	"friend_codes": {
+		"prefix": "friendCode",
+		"body": [
+			"{{< friendCode >}}",
+			"```yaml",
+			"$1",
+			"```",
+			"{{< /friendCode >}}",
+			"$2"
+		],
+		"description": "friend code"
+	},
+	"render": {
+		"prefix": "render",
+		"body": [
+			"{{< renderHtml >}}",
+			"```html",
+			"$1",
+			"```",
+			"{{< /renderHtml >}}",
+			"$2"
+		]
+	},
+	"raw": {
+		"prefix": "raw",
+		"body": [
+			"{{< raw >}}",
+			"$1",
+			"{{< /raw >}}",
+			"$2"
+		]
+	},
+	"markdown table col2": {
+		"prefix": "||",
+		"body": [
+			"| $1 | $2 |",
+			"| :--:| :--: |",
+			"| $3 | $4 |"
+		],
+		"description": [
+			"这个是一个markdown表格，生成2列表格",
+			"table column2"
+		]
+	},
+	"三列表格": {
+		"prefix": "|||",
+		"body": [
+			"| $1 | $2 | $3 |",
+			"| :--:| :--: | :--:  |",
+			"| $4 |  $5 |    $6|",
+			"",
+			""
+		],
+		"description": "三列表格"
+	},
+	"4列表格": {
+		"prefix": "||||",
+		"body": [
+			"| $1\t|$2\t|$3\t|$4\t |",
+			"| :--:| :--: | :--: | :--:  |",
+			"| $5\t|  $6\t|    $7\t|    $8\t|",
+			"",
+			""
+		],
+		"description": "4列表格"
+	},
+	"strong tag": {
+		"prefix": [
+			"/b"
+		],
+		"body": [
+			"**${1:$CLIPBOARD}**"
+		]
+	},
+	"func": {
+		"prefix": "func",
+		"body": "function $1"
+	},
+	"todo": {
+		"prefix": "todo",
+		"body": "- [ ] $1"
+	},
+	"dir": {
+		"prefix": "/dirName",
+		"body": [
+			"${TM_DIRECTORY/(.*)[\\\\]//g}"
+		]
+	},
+	"pie": {
+		"prefix": "pie",
+		"body": [
+			"",
+			"{{< mermaid >}}",
+			"```mermaid",
+			"pie ",
+			"\"Paas\": 1",
+			"\"云计算\":1",
+			"\"大数据\":1",
+			"\"Saas\":1",
+			"\"虚拟机\":1",
+			"",
+			"```",
+			"{{< /mermaid >}}",
+			""
+		],
+		"description": "pie"
+	},
+	"latexbrack": {
+		"prefix": "\\latexbrack",
+		"body": [
+			"",
+			" F^{HLLC}=\\left\\{",
+			"\\begin{array}{rcl}",
+			"F_L\t   &\t  & {0\t  <\t  S_L}\\\\",
+			"F^*_L\t &\t  & {y_i \\leq 0 < S_M}\\\\",
+			"F^*_R\t &\t  & {y_i \\leq 0 < S_R}\\\\",
+			"F_R\t   &\t  & {y_i \\leq 0}",
+			"\\end{array} \\right. ",
+			""
+		]
+	},
+    "fnbracket": {
+        "prefix": "\\fnbracket",
+        "body": [
+            "j_i=\\left\\{",
+            "\\begin{array}{rcl}",
+            "1\t &\t  & {y_i \\geq 0 }\\\\\\",
+            "0\t   &\t  & {y_i \\leq 0}",
+            "\\end{array} \\right."
+        ]
+    },
+    "sigma": {
+        "prefix": "\\sigma",
+        "body": [
+            "\\sum_{i=1}^{10}n"
+        ]
+    },
+
+	"greeting":{
+        "perfix":"hello",
+        "body":"Welcome to ${1:HyperSnips}!"
+    },
+	"$$-dp[i]": {
+        "prefix": ["$$fx","$$dp"],
+        "body": [
+            "\\$\\$",
+            "d(i)=",
+            "\\begin{cases}",
+            "d[i-1]+1 & \\text{if } \\ a[i]>=a[i-1]\\\\\\",
+            "1 & \\text{if } \\ a[i]<a[i-1]\\\\\\",
+            "\\end{cases}",
+            "\\$\\$",
+            ""
+        ],
+        "description": "动态规划"
+    },
+	"$$matrix": {
+        "prefix": "$$matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{matrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{matrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+
+	"$${matrix": {
+        "prefix": "$${matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{Bmatrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{Bmatrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+	"$$[matrix": {
+        "prefix": "$$[matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{bmatrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{bmatrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+	"$$||matrix": {
+        "prefix": "$$||matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{Vmatrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{Vmatrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+	"$$|matrix": {
+        "prefix": "$$|matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{vmatrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{vmatrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+	"$$(matrix": {
+        "prefix": "$$(matrix",
+        "body": [
+            "\\$\\$",
+            "\\begin{pmatrix}",
+            "1 & 2 & 3 \\\\\\",
+            "a & b & c \\\\\\",
+            "\\end{pmatrix}",
+            "\\$\\$",
+            ""
+        ]
+    },
+
+	"$$a/b": {
+        "prefix": "$$a/b",
+        "body": [
+			"\\frac{${1:x}}{${2:y}}"
+        ]
+    },
+    "$$sigema": {
+        "prefix": ["$$sigema","\\sum","\\sigema"],
+        "body": [
+            "\\sum_{${1:n=1}}^{${2:\\infty}} 2^{n}"
+        ]
+    },
+	"$$limit": {
+        "prefix": "$$lim",
+        "body": [
+            "\\lim_{x\\to\\infty} f(x)"
+        ]
+    },
+	"$$delta": {
+        "prefix": "$$delta",
+        "body": [
+            "\\Delta x"
+        ]
+    }, 
+	"$$lambda": {
+        "prefix": "$$lambda",
+        "body": [
+            "\\lambda"
+        ],
+        "description": "$$|x|"
+    },
+	"$$|x|": {
+        "prefix": ["$$|x|","$$abs"],
+        "body": [
+            "\\lvert ${1:x} \\rvert$2"
+        ],
+        "description": "$$|x|"
+    },
+	"<font>": {
+        "prefix": "<font>",
+        "body": [
+            "<font color='${2:red}'>${1}</font>"
+        ],
+        "description": "<font>"
+    },
+	"[]()": {
+        "prefix": "[]",
+        "body": [
+            "[$2](${1:$CLIPBOARD})$3"
+        ],
+        "description": "[超链接](http://xxx)"
+    }
+}

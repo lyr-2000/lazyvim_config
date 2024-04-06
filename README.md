@@ -12,5 +12,3 @@ my lazyvim config
 
 
 
-
-

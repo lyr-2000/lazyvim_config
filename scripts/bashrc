@@ -1,0 +1,48 @@
+
+# alias vi=nvim
+# alias vim=nvim
+alias cls=clear
+
+export NODEJS_HOME=/home/lyr/.software/node20
+export GOROOT=/home/lyr/.software/go
+export PATH=$PATH:$NODEJS_HOME/bin:$GOROOT/bin
+
+# PHPDIR=/usr/local/phpstudy/soft/php/php-7.3.8/bin/:/usr/local/phpstudy/soft/php/php-7.3.8/sbin/depends/
+
+# ~$ cat /etc/bash.bashrc
+
+P2=/usr/local/phpstudy/soft/php/php-5.5.38
+P1="/home/lyr/.luarocks/share/lua/5.1/magick:/home/lyr/.luarocks/share/lua/5.1/magick"
+
+P3="${P1}:${P2}/bin:${P2}/sbin:${P2}/lib:${P2}/sbin/depends"
+
+
+export PATH=$PATH:$NODEJS_HOME/bin:$GOROOT/bin:/usr/bin:$P3
+
+# export http_proxy=http://127.0.0.1:7890
+# export https_proxy=http://127.0.0.1:7890
+#
+#
+
+pwdir=$(pwd)
+
+[[ "$TERM_PROGRAM" == "vscode" ]] && return
+
+
+# tmux default
+[[ $- != *i* ]] && return
+
+
+
+if [[ -z "$TMUX" ]]; then
+	ID="$(tmux ls 2>/dev/null | grep 'attach' | cut -d: -f1 2>/dev/null)" # get the id of a deattached session
+	if [[ -z "$ID" ]]; then                                               # if not available create a new one
+		# echo "do---"
+		# sleep 2
+		tmux new-session
+  elif [ -z "$pwdir" ];then
+		tmux new-session
+	else
+		tmux attach-session -t "$ID" # if available attach to it
+	fi
+fi

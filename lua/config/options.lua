@@ -24,3 +24,5 @@ set laststatus=2
 vim.opt.iskeyword:remove({'_',' '})
 
 
+
+

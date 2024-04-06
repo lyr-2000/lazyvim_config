@@ -7,9 +7,8 @@ return {
 		dependencies = {
 			{
 				"rafamadriz/friendly-snippets",
-				config = function()
-					require("luasnip.loaders.from_vscode").lazy_load()
-				end,
+				-- config = function()
+				-- end,
 			},
 			{
 				"nvim-cmp",
@@ -58,13 +57,32 @@ return {
 				store_selection_keys = "<Tab>",
 			})
 
+      vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/Code/User/snippets'
 			require("luasnip.loaders.from_lua").lazy_load({
 				paths = { vim.fn.stdpath("config") .. "/snippets/lua_snippets" },
 			})
+			--
+			-- require("luasnip.loaders.from_vscode").lazy_load({
+			-- 	paths = { vim.fn.stdpath("config") .. "/snippets","~/.config/Code/User/snippets" },
+			-- })
 
 			require("luasnip.loaders.from_vscode").lazy_load({
-				paths = { vim.fn.stdpath("config") .. "/snippets" },
+			 	paths = { vim.fn.stdpath("config") .. "/snippets","~/.config/Code/User/snippets" },
+			 	-- paths = {  "~/.config/nvim/snippets","~/.config/Code/User/snippets" },
 			})
+      -- vim.opt.runtimepath = vim.opt.runtimepath + '~/.config/Code/User/snippets'
+      -- require("luasnip.loaders.from_vscode").lazy_load({
+      --    paths={ "~/.config/Code/User/snippets"}
+      -- })
+      -- see: https://github.com/L3MON4D3/LuaSnip/issues/123
+      -- load vscode snippets 
+      -- local cwd = vim.fn.getcwd(0).."/.vscode/"
+      -- vim.opt.runtimepath += '~/.config/Code/User/snippets'
+      -- require("luasnip.loaders.from_vscode").lazy_load({
+      --        paths = {"~/.config/nvim/snippets","~/.config/Code/User/snippets"}
+      --      })
+
+
 		end,
     -- stylua: ignore
     keys = {

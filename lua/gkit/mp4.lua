@@ -111,7 +111,7 @@ local function openWin(event)
   local row = vim.o.lines - height - 3
   local col = vim.o.columns - width - 3
   vim.api.nvim_buf_set_lines(buf, 0, -1, false,
-    { "file paths: " .. "" .. filename, "Press Key: ", "O:     -  Open File with browsers", "Q:     -  quit buffer",
+    { "file paths: " .. "" .. filename,""..vim.fn.expand('%:t') , "Press Key: ", "O:     -  Open File with browsers", "Q:     -  quit buffer",
       "F:     -  Open directory " })
   vim.keymap.set("n", "q", ":bp<bar>sp<bar>bn<bar>bd<CR>", {
     silent = true,
