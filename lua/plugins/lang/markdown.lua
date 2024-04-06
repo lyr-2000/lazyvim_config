@@ -22,11 +22,11 @@ return {
         insert_mode_after_paste = false, -- enter insert mode after pasting the markup code
         embed_image_as_base64 = false, -- paste image as base64 string instead of saving to file
         process_cmd = "convert -quality 25 - -",
-        max_base64_size = 1000,       -- max size of base64 string in KB
+        max_base64_size = 300,       -- max size of base64 string in KB
         template = "$FILE_PATH",      -- default template
 
         drag_and_drop = {
-          enabled = true,    -- enable drag and drop mode
+          enabled = false,    -- enable drag and drop mode
           insert_mode = false, -- enable drag and drop in insert mode
           copy_images = false, -- copy images instead of using the original file
           download_images = true, -- download images and save them to dir_path instead of using the URL
@@ -51,6 +51,7 @@ return {
         markdown = {},
       },
     },
+  },
 
     -- {
     --   "vhyrro/luarocks.nvim",
@@ -62,7 +63,7 @@ return {
     -- },
     -- {
     --   "3rd/image.nvim",
-    --   enabled = false,
+    --   enabled =true,
     --   -- dependencies = { "luarocks.nvim" },
     --   config = function()
     --     -- default config
@@ -96,23 +97,6 @@ return {
     --     })                                                                  -- ...
     --   end
     -- }
-  }
-  -- {
-  --   "mfussenegger/nvim-lint",
-  --   -- enabled = true,
-  --   optional = true,
-  --   opts = {
-  --     linters_by_ft = {markdown = { "markdownlint" }},
-  --   },
-  --   config = function()
-  --     -- local markdownlint = require("lint").linters.markdownlint
-  --     -- markdownlint.args = {
-  --     --   "--disable",
-  --     --   "MD013", "MD007",
-  --     --    -- "MD012",
-  --     --   "--",    -- Required
-  --     -- }
-  --   end
-  -- }
+    --
 
 }

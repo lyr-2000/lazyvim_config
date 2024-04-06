@@ -1,5 +1,5 @@
 
-local transparent = true
+local transparent = false
 
 
 local function setupBg()
@@ -17,19 +17,25 @@ local function setupBg()
   hi SignColumn   ctermbg=none  guibg=none
   hi Normal ctermbg=none guibg=none
   hi NonText ctermbg=none guibg=none
+  set autochdir
   ]])
 end
 
 
+local function debug(s)
+ vim.notify(s) 
+end
 local function setupProjectConf()
 
   local cwd = vim.fn.getcwd()
-  if cwd == vim.fn.stdpath('config') then 
+  local cfg = vim.fn.stdpath('config')
+ -- debug("pwd "..cwd)
+  if cwd == cfg then 
     return
   end
-
+  
   local projectconf = tostring(cwd) .. '/.nvim/init.lua'
-  if   (vim.uv or vim.loop).fs_stat(projectconf) then 
+  if  (vim.uv or vim.loop).fs_stat(projectconf) then 
     dofile(projectconf)
   end
 

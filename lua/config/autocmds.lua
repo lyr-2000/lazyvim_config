@@ -116,24 +116,22 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 })
 
 
--- Disable the concealing in some file formats 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown" },
-  callback = function()
-    vim.wo.conceallevel = 0
-  end,
-})
 
 local safe = require("gkit/safe")
 
--- Disable the concealing in some file formats 
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = { "markdown" },
-  callback = function(event)
-    safe.run(require("gkit/md").bindkey,event)
-  end,
-})
+-- -- Disable the concealing in some file formats 
+-- vim.api.nvim_create_autocmd("BufEnter", {
+--   group = augroup("markdownkey"),
+--   pattern = { "markdown" },
+--   callback = function(event)
+--      vim.wo.conceallevel = 0
+--     safe.run(require("gkit/md").bindkey,event)
+--   end,
+-- })
 
+if safe ~= nil then 
+  safe.run(require("gkit/md").bindkey)
+end
 
 
 

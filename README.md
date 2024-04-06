@@ -12,3 +12,5 @@ my lazyvim config
 
 
 
+![aa](./static/2024-04-05-15-00-28.png)
+

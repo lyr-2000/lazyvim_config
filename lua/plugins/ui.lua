@@ -2,6 +2,7 @@
 return { -- disable catppuccin
   {
     "tomasiser/vim-code-dark", --"codedark"
+     -- enabled = false,
     config = function()
       vim.cmd([[
 set enc=utf-8
@@ -16,7 +17,7 @@ set enc=utf-8
     "LazyVim/LazyVim",
     -- enable = false,
     opts = {
-      colorscheme = "codedark",
+      colorscheme = "gruvbox",
     },
   }, -- change trouble config
   {

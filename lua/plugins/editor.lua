@@ -27,6 +27,24 @@ return {
             dependencies = { "https://github.com/chrisgrieser/nvim-scissors" },
           },
 
+          {
+            name = "Reload",
+            callback = function()
+              vim.cmd("so $MYVIMRC")
+              local cwd = vim.fn.getcwd(0,0)
+              -- local conf = vim.fn.getcwd('config')
+              -- if cwd ==  conf then 
+              --   return
+              -- end
+              vim.notify("set cwd:"..tostring(cwd))
+              local projectconf = tostring(cwd) .. '/.nvim/init.lua'
+              if  (vim.uv or vim.loop).fs_stat(projectconf) then
+                dofile(projectconf)
+              end
+
+
+            end,
+          },
         },
       })
     end,
