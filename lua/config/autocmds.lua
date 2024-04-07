@@ -106,14 +106,14 @@ vim.api.nvim_create_autocmd("User", {
 
 
 -- Fix go files on save
-vim.api.nvim_create_augroup("fix_go_on_save", { clear = true })
-vim.api.nvim_create_autocmd("BufWritePost", {
-  group = "fix_go_on_save",
-  pattern = { "*.go" },
-  callback = function()
-    vim.cmd("!golangci-lint run --fix")
-  end,
-})
+-- vim.api.nvim_create_augroup("fix_go_on_save", { clear = true })
+-- vim.api.nvim_create_autocmd("BufWritePost", {
+--   group = "fix_go_on_save",
+--   pattern = { "*.go" },
+--   callback = function()
+--     vim.cmd("!golangci-lint run --fix")
+--   end,
+-- })
 
 
 
@@ -156,4 +156,12 @@ vim.api.nvim_create_autocmd("BufWritePost", {
     zh_code = 1, -- fcitx_code=1 is chinese input method mode
   })
 
-require("gkit/lang").setup()
+-- require("gkit/lang").setup()
+
+
+local safe = require("gkit/safe")
+
+if safe ~= nil then 
+  -- safe.run(require("gkit/md").setup)
+  safe.run(require("gkit/lang").setup())
+end

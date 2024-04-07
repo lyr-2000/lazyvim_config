@@ -28,16 +28,6 @@ set enc=utf-8
   {
     "rcarriga/nvim-notify",
     enabled = true,
-    -- keys = {{
-    --     "<leader>un",
-    --     function()
-    --         require("notify").dismiss({
-    --             silent = true,
-    --             pending = true
-    --         })
-    --     end,
-    --     desc = "Dismiss All Notifications"
-    -- }},
     opts = {
       stages = "static",
       timeout = 3000,
@@ -49,21 +39,10 @@ set enc=utf-8
       end,
       on_open = function(win)
         vim.api.nvim_win_set_config(win, {
-          zindex = 100,
+          zindex = 100, -- must use this config
         })
       end,
     },
-    init = function()
-      -- when noice is not enabled, install notify on VeryLazy
-      if not LazyVim then
-        return
-      end
-      if not LazyVim.has("noice.nvim") then
-        LazyVim.on_very_lazy(function()
-          vim.notify = require("notify")
-        end)
-      end
-    end,
   },
   {
     "simrat39/symbols-outline.nvim",

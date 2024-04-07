@@ -39,6 +39,17 @@ end
 
 -- map("n","<C-scrollWheelUp>","<C-=>")
 -- map("n","<C-scrollWheelDown>","<C-->")
+--   
+ 
+map("i","<c-z>",function() 
+  vim.cmd("normal! u")  
+end)
+
+map("i","<c-s-z>",function() 
+  vim.cmd("redo")  
+end)
+
+
 
 map("n", "<C-t>", lazyterm, { desc = "show ter" })
 -- map("n", "<A-t>", ":echo 'abc'", { desc = "show ter" })
@@ -59,10 +70,11 @@ map("n", "U", "<cmd>redo<cr>")
 map({ "n", "v", "o" }, "H", "^")
 map({ "n", "v", "o" }, "L", "$")
 --  buffer切换
-map("n", "<A-h>", "<C-w>h")
-map("n", "<A-l>", "<C-w>l")
-map("n", "<A-j>", "<C-w>j")
-map("n", "<A-k>", "<C-w>k")
+map({"n","v"}, "<A-h>", "<C-w>h")
+map({"n","v"}, "<A-l>", "<C-w>l")
+map({"n","v"}, "<A-j>", "<C-w>j")
+map({"n","v"}, "<A-k>", "<C-w>k")
+
 map("n", "<A-S-j>", "<cmd>resize -2<cr>")
 map("n", "<A-S-k>", "<cmd>resize +2<cr>")
 map("n", "<A-S-h>", "<cmd>vertical resize -2<cr>")
@@ -105,7 +117,7 @@ map("c", "<C-a>", "SudaWrite", {
 local builtin = require("telescope.builtin")
 -- grep search https://github.com/BurntSushi/ripgrep#installation
 
-map("n", "gff", function()
+map("n", "gf", function()
   require("telescope.builtin").live_grep({
     cwd = vim.fn.getcwd(),
   })
