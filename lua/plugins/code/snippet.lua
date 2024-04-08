@@ -78,13 +78,13 @@ return {
           end,
 
           ["<Tab>"] = function(fallback)
-            if true or cmp.visible() then
-              cmp.mapping.confirm({
+            -- if cmp.visible() then
+            cmp.mapping.confirm({
 
-                behavior = cmp.ConfirmBehavior.Replace,
-                select = true,
-              })(fallback)
-            end
+              behavior = cmp.ConfirmBehavior.Replace,
+              select = true,
+            })(fallback)
+            -- end
           end,
         }),
         -- sources = cmp.config.sources({

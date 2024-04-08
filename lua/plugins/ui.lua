@@ -1,23 +1,32 @@
 --
+
+useTheme = "molokai"
+
+
 return { -- disable catppuccin
   {
     "tomasiser/vim-code-dark", --"codedark"
-     -- enabled = false,
+    enabled = useTheme == "codedark",
     config = function()
       vim.cmd([[
 set enc=utf-8
       ]])  
     end
   },
+  { 
+    "tomasr/molokai" ,
+    enabled = useTheme == "molokai"
+  },
   {
     "ellisonleao/gruvbox.nvim",
     -- enabled = false
+    enabled = useTheme == "gruvbox",
   },
   {
     "LazyVim/LazyVim",
     -- enable = false,
     opts = {
-      colorscheme = "gruvbox",
+      colorscheme = useTheme,
     },
   }, -- change trouble config
   {
@@ -46,6 +55,7 @@ set enc=utf-8
   },
   {
     "simrat39/symbols-outline.nvim",
+    event ="VeryLazy",
     cmd = "SymbolsOutline",
     keys = { 
       {
