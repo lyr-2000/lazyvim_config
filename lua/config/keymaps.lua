@@ -361,7 +361,7 @@ end, {
 })
 
 map("v", "gr", ":s///g<left><left><left>", { desc = "replace global" })
-map("n", "gr", ":s///g<left><left><left>", { desc = "replace word" })
+map("n", "gr", "vawy:%s///g<left><left><left><C-r>+<right>", { desc = "replace word" })
 
 -- map("n","gk",function(opt)
 --   return vim.lsp.buf.references(opt)
