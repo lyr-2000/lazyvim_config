@@ -67,6 +67,15 @@ map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 
 map("n", "U", "<cmd>redo<cr>")
 
+
+map({ "n" }, "<leader>h", function ()
+  vim.cmd("normal! H")
+end,{desc="top of screen"})
+
+map({ "n"  }, "<leader>l", function ()
+  vim.cmd("normal! L")
+end,{desc="bottom of screen"})
+
 map({ "n", "v", "o" }, "H", "^")
 map({ "n", "v", "o" }, "L", "$")
 --  buffer切换
