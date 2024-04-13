@@ -76,6 +76,12 @@ map({ "n"  }, "<leader>l", function ()
   vim.cmd("normal! L")
 end,{desc="bottom of screen"})
 
+map({"n"},"<leader>jo",function() 
+  local shellv = "open"
+  local filename = vim.fn.expand("%:p:h")
+  local ret = vim.fn.system("nohup " .. shellv .. " '" .. filename .. "' ")
+end,{desc="open directory"} )
+
 map({ "n", "v", "o" }, "H", "^")
 map({ "n", "v", "o" }, "L", "$")
 --  buffer切换

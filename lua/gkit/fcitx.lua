@@ -69,12 +69,13 @@ local function getOS()
   -- if jit then
   --   return jit.os
   -- end
-  local Osname = ''
-  -- Unix, Linux variants
-  local fh =(vim.fn.system("uname -o 2>/dev/null"))
-  Osname=fh
+  -- local Osname = ''
+  -- -- Unix, Linux variants
+  -- local fh =(vim.fn.system("uname -o 2>/dev/null"))
+  -- Osname=fh
 
-  return Osname or "Windows"
+  -- return Osname or "Windows"
+  return vim.loop.os_uname().sysname
 end
 
 
@@ -145,6 +146,7 @@ local function setup(opt)
   local ok,os = pcall(getOS)
   if not ok then
     vim.notify('error occur '..tostring(os).."||"..tostring(err))
+    return
   end
   if string.find(os,'Linux') ~= nil then 
     setupCore(opt)
@@ -155,5 +157,5 @@ local function setupe(opt)
 end
 
 return {
-  setup = setupe
+  setup = setup
 }
