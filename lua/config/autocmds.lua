@@ -163,5 +163,5 @@ local safe = require("gkit/safe")
 
 if safe ~= nil then 
   -- safe.run(require("gkit/md").setup)
-  safe.run(require("gkit/lang").setup())
+  safe.run(require("gkit/lang").setup)
 end

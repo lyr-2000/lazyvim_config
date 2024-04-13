@@ -9,7 +9,8 @@
 -- local map = Util.safe_keymap_set
 --
 
-local gkit = require("gkit")
+-- local gkit = require("gkit")
+local safe = require("gkit/safe")
 
 local function isdap()
   local dap = require("dap")
@@ -39,14 +40,14 @@ end
 
 -- map("n","<C-scrollWheelUp>","<C-=>")
 -- map("n","<C-scrollWheelDown>","<C-->")
---   
- 
-map("i","<c-z>",function() 
-  vim.cmd("normal! u")  
+--
+
+map("i", "<c-z>", function()
+  vim.cmd("normal! u")
 end)
 
-map("i","<c-s-z>",function() 
-  vim.cmd("redo")  
+map("i", "<c-s-z>", function()
+  vim.cmd("redo")
 end)
 
 
@@ -68,27 +69,27 @@ map("n", "<a-]>", "<C-i>", { desc = "next pos" })
 map("n", "U", "<cmd>redo<cr>")
 
 
-map({ "n" }, "<leader>h", function ()
+map({ "n" }, "<leader>h", function()
   vim.cmd("normal! H")
-end,{desc="top of screen"})
+end, { desc = "top of screen" })
 
-map({ "n"  }, "<leader>l", function ()
+map({ "n" }, "<leader>l", function()
   vim.cmd("normal! L")
-end,{desc="bottom of screen"})
+end, { desc = "bottom of screen" })
 
-map({"n"},"<leader>jo",function() 
+map({ "n" }, "<leader>jo", function()
   local shellv = "open"
   local filename = vim.fn.expand("%:p:h")
   local ret = vim.fn.system("nohup " .. shellv .. " '" .. filename .. "' ")
-end,{desc="open directory"} )
+end, { desc = "open directory" })
 
 map({ "n", "v", "o" }, "H", "^")
 map({ "n", "v", "o" }, "L", "$")
 --  buffer切换
-map({"n","v"}, "<A-h>", "<C-w>h")
-map({"n","v"}, "<A-l>", "<C-w>l")
-map({"n","v"}, "<A-j>", "<C-w>j")
-map({"n","v"}, "<A-k>", "<C-w>k")
+map({ "n", "v" }, "<A-h>", "<C-w>h")
+map({ "n", "v" }, "<A-l>", "<C-w>l")
+map({ "n", "v" }, "<A-j>", "<C-w>j")
+map({ "n", "v" }, "<A-k>", "<C-w>k")
 
 map("n", "<A-S-j>", "<cmd>resize -2<cr>")
 map("n", "<A-S-k>", "<cmd>resize +2<cr>")
@@ -159,7 +160,7 @@ local function domsg(s)
   vim.notify(s)
 end
 
-map("n","<leader>a","ggVG",{desc = "select all"})
+map("n", "<leader>a", "ggVG", { desc = "select all" })
 -- map("n", "<leader>a", function()
 --   -- gkit.test()
 --   -- vim.notify("heloworld")
@@ -228,7 +229,37 @@ map({ "n" }, "<C-i>", function()
   end
 end)
 
+
+local function putchar(sh)
+  -- Get the current line number and column
+  local cursor = vim.api.nvim_win_get_cursor(0)
+  local line_number, column = cursor[1], cursor[2]
+
+  -- Get the content of the current line
+  local line_content = vim.api.nvim_buf_get_lines(0, line_number - 1, line_number, false)[1]
+
+  -- Calculate the length of the line content
+  local line_length = string.len(line_content)
+
+  -- Calculate the column position to insert text
+  local insert_column = line_length + 1
+
+  -- Set the cursor position to the desired column
+  vim.api.nvim_win_set_cursor(0, { line_number, insert_column })
+
+  -- Insert text at the end of the line
+  vim.api.nvim_put({ sh }, "", true, true)
+end
+
+
 map({ "n", "i" }, "<C-l>", function()
+  local filename = vim.fn.expand("%:p")
+  -- if markdown file, press c-l insert char '。'
+  if string.find(filename, '.md') ~= nil then
+    -- putchar("。")
+    safe.run(putchar, "。")
+    return
+  end
   -- todo , 判断类型
   vim.cmd(':execute "normal! \\<ESC>A;"')
 end, { desc = "<nop>" })
@@ -386,14 +417,14 @@ map("n", "gk", "<cmd>Telescope lsp_references<CR>", { desc = "References" })
 
 map("n", "<leader>ka", function()
   vim.cmd("CompetiTest add_testcase")
-end,{desc="add test case"})
+end, { desc = "add test case" })
 
-map("n", "<leader>kd", "<cmd>CompetiTest delete_testcase<cr>",{desc = "del test"})
-map("n", "<leader>ke", "<cmd>CompetiTest edit_testcase<cr>",{desc = "edit test"})
+map("n", "<leader>kd", "<cmd>CompetiTest delete_testcase<cr>", { desc = "del test" })
+map("n", "<leader>ke", "<cmd>CompetiTest edit_testcase<cr>", { desc = "edit test" })
 map("n", "<leader>kr", function()
   vim.notify("test run")
   vim.cmd("CompetiTest run")
-end,{desc = "runt test"})
+end, { desc = "runt test" })
 
 -- map({"n","i"},"<c-s-{>","zc")
 -- map({"n","i"},"<c-s-}>","zo")
